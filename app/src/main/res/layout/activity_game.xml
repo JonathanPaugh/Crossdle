@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".GameActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/game_fragmentView_gamebar"
+        android:name="com.example.crossdle.GamebarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        tools:layout="@layout/fragment_gamebar" />
+
+    <TextView
+        android:id="@+id/game_textView_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="Daily"
+        android:textAlignment="center"
+        android:textSize="32sp" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/game_fragmentView_board"
+        android:name="com.example.crossdle.BoardFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_board" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/game_fragmentView_keyboard"
+        android:name="com.example.crossdle.KeyboardFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        tools:layout="@layout/fragment_keyboard" />
+</LinearLayout>
