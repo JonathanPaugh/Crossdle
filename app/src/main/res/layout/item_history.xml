@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -19,86 +28,91 @@
                 android:id="@+id/historyItem_textView_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title"
+                android:layout_weight="1"
+                android:text="@string/history_item_field_title"
                 android:textSize="22sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Time" />
+                    android:text="@string/history_item_field_time" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text=":" />
+                    android:text="@string/app_colon" />
 
                 <TextView
+                    android:id="@+id/historyItem_textView_time"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="10" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Correct Words" />
+                    android:text="@string/history_item_field_correct" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text=":" />
+                    android:text="@string/app_colon" />
 
                 <TextView
+                    android:id="@+id/historyItem_textView_words"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="10" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Attempts" />
+                    android:text="@string/history_item_field_attempts" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text=":" />
+                    android:text="@string/app_colon" />
 
                 <TextView
+                    android:id="@+id/historyItem_textView_attempts"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="10" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
         </LinearLayout>
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/historyItem_fragmentView_preview"
-            android:name="com.example.crossdle.BoardFragment"
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/historyItem_fragmentView_preview"
+                android:name="com.example.crossdle.BoardFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:layout="@layout/fragment_board" />
+        </FrameLayout>
     </LinearLayout>
 
 </LinearLayout>

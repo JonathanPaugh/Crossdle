@@ -19,19 +19,26 @@
         android:id="@+id/game_textView_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:text="Daily"
-        android:textAlignment="center"
+        android:layout_weight="0"
+        android:gravity="clip_horizontal|center|center_vertical"
+        android:paddingTop="42dp"
+        android:text="@string/game_heading_daily"
+        android:textAlignment="gravity"
         android:textSize="32sp" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/game_fragmentView_board"
-        android:name="com.example.crossdle.BoardFragment"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:layout="@layout/fragment_board" />
+        android:layout_weight="1">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/game_fragmentView_board"
+            android:name="com.example.crossdle.BoardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:layout="@layout/fragment_board" />
+    </FrameLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/game_fragmentView_keyboard"

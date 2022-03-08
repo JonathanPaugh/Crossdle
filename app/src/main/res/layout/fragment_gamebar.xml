@@ -14,14 +14,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:src="@drawable/ic_baseline_settings_24" />
+        android:contentDescription="@string/gamebar_help_settings"
+        android:src="@drawable/ic_baseline_settings_24"
+        app:tint="@color/primary" />
 
     <TextView
+        android:id="@+id/gamebar_imageView_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="Crossdle"
+        android:text="@string/gamebar_heading_title"
         android:textAlignment="center"
+        android:textColor="@color/primary"
         android:textSize="32sp" />
 
     <ImageView
@@ -29,6 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:src="@drawable/ic_baseline_info_24" />
+        android:contentDescription="@string/gamebar_help_info"
+        android:src="@drawable/ic_baseline_info_24"
+        app:tint="@color/primary" />
 
 </LinearLayout>
