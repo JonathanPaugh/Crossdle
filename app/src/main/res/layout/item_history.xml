@@ -110,8 +110,7 @@
                 android:name="com.example.crossdle.BoardFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                tools:layout="@layout/fragment_board" />
+                android:layout_gravity="center" />
         </FrameLayout>
     </LinearLayout>
 
