@@ -1,11 +1,15 @@
 package com.example.crossdle;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalTime;
@@ -32,6 +36,7 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         viewHolder.setTime(item.getTime());
         viewHolder.setWords(item.getWords());
         viewHolder.setAttempts(item.getAttempts());
+        viewHolder.setPreview(item.getContext(), item.getBoard());
     }
 
     @Override
@@ -43,14 +48,12 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         private final TextView timeView;
         private final TextView wordsView;
         private final TextView attemptsView;
-        private final FragmentContainerView previewFragmentView;
 
         public ViewHolder(View view) {
             super(view);
             timeView = view.findViewById(R.id.historyItem_textView_time);
             wordsView = view.findViewById(R.id.historyItem_textView_words);
             attemptsView = view.findViewById(R.id.historyItem_textView_attempts);
-            previewFragmentView = view.findViewById(R.id.historyItem_fragmentView_preview);
         }
 
         public void setTime(LocalTime time) {
@@ -62,6 +65,8 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         public void setAttempts(int attempts) {
             attemptsView.setText(Integer.toString(attempts));
         }
-
+        public void setPreview(AppCompatActivity activity, Board board) {
+            BoardFragment.displayFragment(activity, R.id.historyItem_fragmentView_preview, board);
+        }
     }
 }

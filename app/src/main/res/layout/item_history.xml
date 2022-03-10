@@ -107,10 +107,10 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/historyItem_fragmentView_preview"
-                android:name="com.example.crossdle.BoardFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                tools:layout="@layout/fragment_board"/>
         </FrameLayout>
     </LinearLayout>
 

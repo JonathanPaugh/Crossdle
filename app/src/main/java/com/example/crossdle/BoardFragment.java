@@ -1,12 +1,18 @@
 package com.example.crossdle;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,33 +21,26 @@ import android.view.ViewGroup;
  */
 public class BoardFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_LAYOUT = "ARG_LAYOUT";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final int[][] LAYOUT = new int[][]
+    {
+        { R.id.board_cell_0_0, R.id.board_cell_1_0, R.id.board_cell_2_0, R.id.board_cell_3_0, R.id.board_cell_4_0, R.id.board_cell_5_0, },
+        { R.id.board_cell_0_1, R.id.board_cell_1_1, R.id.board_cell_2_1, R.id.board_cell_3_1, R.id.board_cell_4_1, R.id.board_cell_5_1, },
+        { R.id.board_cell_0_2, R.id.board_cell_1_2, R.id.board_cell_2_2, R.id.board_cell_3_2, R.id.board_cell_4_2, R.id.board_cell_5_2, },
+        { R.id.board_cell_0_3, R.id.board_cell_1_3, R.id.board_cell_2_3, R.id.board_cell_3_3, R.id.board_cell_4_3, R.id.board_cell_5_3, },
+        { R.id.board_cell_0_4, R.id.board_cell_1_4, R.id.board_cell_2_4, R.id.board_cell_3_4, R.id.board_cell_4_4, R.id.board_cell_5_4, },
+        { R.id.board_cell_0_5, R.id.board_cell_1_5, R.id.board_cell_2_5, R.id.board_cell_3_5, R.id.board_cell_4_5, R.id.board_cell_5_5, }
+    };
 
-    public BoardFragment() {
-        // Required empty public constructor
-    }
+    private Board board;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BoardFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BoardFragment newInstance(String param1, String param2) {
+    public BoardFragment() {}
+
+    public static BoardFragment newInstance(Board board) {
         BoardFragment fragment = new BoardFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_LAYOUT, board);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,15 +49,37 @@ public class BoardFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            board = (Board)getArguments().getSerializable(ARG_LAYOUT);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_board, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        for (int y = 0; y < LAYOUT.length; y++) {
+            for (int x = 0; x < LAYOUT.length; x++) {
+                char data = board.getCell(x, y);
+                TextView textView = view.findViewById(LAYOUT[y][x]);
+                if (data == Character.MIN_VALUE || Character.isSpaceChar(data)) {
+                    textView.setBackgroundColor(Color.BLACK);
+                } else {
+                    textView.setText(String.valueOf(data));
+                }
+            }
+        }
+    }
+
+    public static void displayFragment(AppCompatActivity activity, int id, Board board) {
+        BoardFragment fragment = BoardFragment.newInstance(board);
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(id, fragment);
+        transaction.commit();
     }
 }
