@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".GameActivity">
+    tools:context=".app.activity.GameActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/game_fragmentView_gamebar"
-        android:name="com.example.crossdle.GamebarFragment"
+        android:name="com.example.crossdle.app.fragment.GamebarFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
@@ -42,7 +42,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/game_fragmentView_keyboard"
-        android:name="com.example.crossdle.KeyboardFragment"
+        android:name="com.example.crossdle.app.fragment.KeyboardFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"

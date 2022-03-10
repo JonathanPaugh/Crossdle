@@ -6,7 +6,7 @@
     android:layout_gravity="center_horizontal"
     android:background="#000000"
     android:padding="2sp"
-    tools:context=".BoardFragment">
+    tools:context=".app.fragment.BoardFragment">
 
     <TableRow
         android:layout_width="match_parent"

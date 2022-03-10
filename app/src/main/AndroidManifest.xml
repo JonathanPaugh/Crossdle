@@ -10,22 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Crossdle" >
         <activity
-            android:name=".FinishedGamePopUp"
+            android:name=".app.popup.FinishedGamePopup"
             android:exported="false" />
         <activity
-            android:name=".SettingsPopUp"
+            android:name=".app.popup.SettingsPopup"
             android:exported="false" />
         <activity
-            android:name=".HelpPopUp"
+            android:name=".app.popup.HelpPopup"
             android:exported="false" />
         <activity
-            android:name=".HistoryActivity"
+            android:name=".app.activity.HistoryActivity"
             android:exported="true" />
         <activity
-            android:name=".GameActivity"
+            android:name=".app.activity.GameActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".app.activity.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

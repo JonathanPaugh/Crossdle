@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="12sp"
-    tools:context=".GamebarFragment">
+    tools:context=".app.fragment.GamebarFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

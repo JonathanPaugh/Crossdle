@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="#222222"
     android:orientation="vertical"
-    tools:context=".KeyboardFragment">
+    tools:context=".app.fragment.KeyboardFragment">
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
