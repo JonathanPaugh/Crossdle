@@ -19,11 +19,11 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        updateRecycler(R.id.history_recyclerView, new HistoryItem[] {
+/*        updateRecycler(R.id.history_recyclerView, new HistoryItem[] {
             new HistoryItem(this, LocalTime.now(), 5, 10, new Board('A')),
             new HistoryItem(this, LocalTime.now(), 2, 4, new Board('B')),
             new HistoryItem(this, LocalTime.now(), 100, 200, new Board('C')),
-        });
+        });*/
     }
 
     private void updateRecycler(int recyclerViewId, HistoryItem[] data) {

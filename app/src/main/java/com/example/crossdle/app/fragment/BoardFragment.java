@@ -1,6 +1,5 @@
 package com.example.crossdle.app.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,15 +15,12 @@ import android.widget.TextView;
 
 import com.example.crossdle.R;
 import com.example.crossdle.game.Board;
+import com.example.crossdle.game.Cell;
+import com.example.crossdle.game.Selection;
+import com.example.crossdle.game.Word;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BoardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BoardFragment extends Fragment {
-
-    private static final String ARG_LAYOUT = "ARG_LAYOUT";
+    private static final String ARG_BOARD = "ARG_BOARD";
 
     private static final int[][] LAYOUT = new int[][]
     {
@@ -40,19 +36,11 @@ public class BoardFragment extends Fragment {
 
     public BoardFragment() {}
 
-    public static BoardFragment newInstance(Board board) {
-        BoardFragment fragment = new BoardFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_LAYOUT, board);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            board = (Board)getArguments().getSerializable(ARG_LAYOUT);
+            board = (Board)getArguments().getSerializable(ARG_BOARD);
         }
     }
 
@@ -65,24 +53,61 @@ public class BoardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setup(view);
+        board.draw();
+    }
 
+    public void onClickCell(View view) {
+        Index index = findViewIdIndex(view.getId());
+        board.select(index.x, index.y);
+    }
+
+    public void setup(View view) {
         for (int y = 0; y < LAYOUT.length; y++) {
-            for (int x = 0; x < LAYOUT.length; x++) {
-                char data = board.getCell(x, y);
+            for (int x = 0; x < LAYOUT[y].length; x++) {
                 TextView textView = view.findViewById(LAYOUT[y][x]);
-                if (data == Character.MIN_VALUE || Character.isSpaceChar(data)) {
-                    textView.setBackgroundColor(Color.BLACK);
-                } else {
-                    textView.setText(String.valueOf(data));
-                }
+                textView.setOnClickListener(this::onClickCell);
             }
         }
     }
 
-    public static void displayFragment(AppCompatActivity activity, int id, Board board) {
+
+    private Index findViewIdIndex(int viewId) {
+        int[][] viewIds = LAYOUT;
+        for (int y = 0; y < viewIds.length; y++) {
+            for (int x = 0; x < viewIds[y].length; x++) {
+                if (viewId == viewIds[y][x]) {
+                    return new Index(x, y);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static BoardFragment newInstance(Board board) {
+        BoardFragment fragment = new BoardFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_BOARD, board);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static BoardFragment frame(AppCompatActivity activity, int id, Board board) {
         BoardFragment fragment = BoardFragment.newInstance(board);
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
         transaction.replace(id, fragment);
         transaction.commit();
+        return fragment;
+    }
+
+    private class Index {
+        public final int x;
+        public final int y;
+
+        public Index(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }
