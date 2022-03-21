@@ -42,12 +42,14 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.isCanceled()) {
-            board.clickBack();
-        } else if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            char character = (char)event.getUnicodeChar(event.getMetaState());
-            if (Character.isLetter(character)) {
-                board.clickKey((Character.toUpperCase(character)));
+         if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
+                board.clickBack();
+            } else {
+                char character = (char)event.getUnicodeChar(event.getMetaState());
+                if (Character.isLetter(character)) {
+                    board.clickKey((Character.toUpperCase(character)));
+                }
             }
         }
 

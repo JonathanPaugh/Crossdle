@@ -26,8 +26,9 @@ public class Cell
     private static final int COLOR_HINT = Color.YELLOW;
     private static final int COLOR_CORRECT = Color.GREEN;
     private static final int COLOR_SELECTED = Color.BLUE;
+    private static final int COLOR_ACTIVE = Color.MAGENTA;
 
-    private static final int SELECTED_STROKE = 5;
+    private static final int SELECTED_STROKE = 6;
     private static final int SELECTED_RADIUS = 3;
 
     private final int x;
@@ -112,12 +113,15 @@ public class Cell
         if (isSet()) {
             view.setText(String.valueOf(value));
             State state = getState();
-
             if (selected) {
                 GradientDrawable background = new GradientDrawable();
-                background.setColor(state.getColor());
-                background.setStroke(SELECTED_STROKE, COLOR_SELECTED);
                 background.setCornerRadius(SELECTED_RADIUS);
+                background.setColor(state.getColor());
+                if (active) {
+                    background.setStroke(SELECTED_STROKE, COLOR_ACTIVE);
+                } else {
+                    background.setStroke(SELECTED_STROKE, COLOR_SELECTED);
+                }
                 view.setBackground(background);
             } else {
                 view.setBackgroundColor(state.getColor());

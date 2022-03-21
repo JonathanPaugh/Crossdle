@@ -5,14 +5,9 @@ public class Selection
     private Word word;
     private Cell current;
 
-    public Word getWord() {
-        return word;
-    }
-
     private void setCurrent(Cell cell) {
-        if (current != null) {
-            current.setActive(false);
-        }
+        if (current != null) { current.setActive(false); }
+        if (cell == null) { return; }
         current = cell;
         current.setActive(true);
     }
@@ -27,7 +22,7 @@ public class Selection
         if (destination == null || !destination.isSet()) {
             return;
         }
-        current = destination;
+        setCurrent(destination);
     }
 
     public void prev() {
@@ -36,16 +31,16 @@ public class Selection
         if (destination == null || !destination.isSet()) {
             return;
         }
-        current = destination;
+        setCurrent(destination);
     }
 
     public void update(Word word) {
         selectCells(false);
         this.word = word;
         if (isSet()) {
-            this.current = this.word.getStart();
+            setCurrent(this.word.getStart());
         } else {
-            this.current = null;
+            setCurrent(null);
         }
         selectCells(true);
     }
