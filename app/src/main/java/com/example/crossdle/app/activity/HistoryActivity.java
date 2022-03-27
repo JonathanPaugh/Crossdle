@@ -23,8 +23,8 @@ public class HistoryActivity extends FragmentActivity {
     private FragmentStateAdapter adapter;
 
     private HistoryItem[] items = new HistoryItem[] {
-            new HistoryItem(this, "#247", LocalTime.now(), 5, 10, Board.TEST_LAYOUT),
-            new HistoryItem(this, "#246", LocalTime.now(), 7, 9, Board.TEST_LAYOUT)
+            new HistoryItem("#247", LocalTime.now(), 5, 10, Board.TEST_LAYOUT),
+            new HistoryItem("#246", LocalTime.now(), 7, 9, Board.TEST_LAYOUT)
     };
 
     @Override

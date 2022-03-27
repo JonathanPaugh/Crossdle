@@ -8,15 +8,13 @@ import java.io.Serializable;
 import java.time.LocalTime;
 
 public class HistoryItem implements Serializable {
-    private FragmentActivity activity;
     private String gameId;
     private LocalTime time;
     private int words;
     private int attempts;
     private char[] layout;
 
-    public HistoryItem(FragmentActivity activity, String gameId, LocalTime time, int words, int attempts, char[] layout) {
-        this.activity = activity;
+    public HistoryItem(String gameId, LocalTime time, int words, int attempts, char[] layout) {
         this.gameId = gameId;
         this.time = time;
         this.words = words;
@@ -24,7 +22,6 @@ public class HistoryItem implements Serializable {
         this.layout = layout;
     }
 
-    public FragmentActivity getActivity() { return activity; }
     public String getGameId() { return gameId; }
     public LocalTime getTime() {
         return time;

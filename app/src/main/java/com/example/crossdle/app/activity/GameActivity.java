@@ -25,8 +25,8 @@ public class GameActivity extends AppCompatActivity {
 
         board = new Board(view, Board.TEST_LAYOUT);
 
-        keyboardFragment = KeyboardFragment.frame(this, R.id.game_fragmentView_keyboard, board);
-        boardFragment = BoardFragment.frame(this, R.id.game_fragmentView_board, board);
+        keyboardFragment = KeyboardFragment.frame(getSupportFragmentManager(), R.id.game_fragmentView_keyboard, board);
+        boardFragment = BoardFragment.frame(getSupportFragmentManager(), R.id.game_fragmentView_board, board);
 
         view.setViewHandler(boardFragment::getView);
     }

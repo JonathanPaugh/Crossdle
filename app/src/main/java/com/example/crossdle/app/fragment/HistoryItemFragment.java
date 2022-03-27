@@ -21,7 +21,6 @@ public class HistoryItemFragment extends Fragment {
     private static final String ARG_ITEM = "ARG_ITEM";
 
     private HistoryItem item;
-    private Board board;
 
     public HistoryItemFragment() {}
 
@@ -51,19 +50,21 @@ public class HistoryItemFragment extends Fragment {
         timeView.setText(item.getTime().toString());
         wordsView.setText(String.valueOf(item.getWords()));
         attemptsView.setText(String.valueOf(item.getAttempts()));
+        setPreview(item.getLayout());
+    }
 
+    private void setPreview(char[] layout) {
         BoardView boardView = new BoardView();
-        Board board = new Board(boardView, item.getLayout());
+        Board board = createBoard(boardView, layout);
+        BoardFragment.frame(getChildFragmentManager(), R.id.historyItem_fragmentView_preview, board);
+        boardView.setViewHandler(this::getView);
+    }
 
+    private Board createBoard(BoardView boardView, char[] layout) {
+        Board board = new Board(boardView, layout);
         board.setActive(false);
         board.forEach(cell -> cell.setValue(cell.getData()));
-
-        Fragment fragment = BoardFragment.newInstance(board);
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.historyItem_fragmentView_preview, fragment);
-        transaction.commit();
-
-        boardView.setViewHandler(this::getView);
+        return board;
     }
 
     public static HistoryItemFragment newInstance(HistoryItem item) {

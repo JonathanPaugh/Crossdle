@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -93,9 +94,9 @@ public class BoardFragment extends Fragment {
         return fragment;
     }
 
-    public static BoardFragment frame(AppCompatActivity activity, int id, Board board) {
+    public static BoardFragment frame(FragmentManager manager, int id, Board board) {
         BoardFragment fragment = BoardFragment.newInstance(board);
-        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(id, fragment);
         transaction.commit();
         return fragment;
