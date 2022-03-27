@@ -31,7 +31,9 @@
                 android:id="@+id/history_textView_games"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -52,7 +54,10 @@
                 android:id="@+id/history_textView_streak"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/primary"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -73,15 +78,17 @@
                 android:id="@+id/history_textView_win"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_green_light"
+                android:textSize="20sp" />
         </LinearLayout>
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/history_recyclerView"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/history_viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

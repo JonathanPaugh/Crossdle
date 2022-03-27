@@ -3,9 +3,7 @@ package com.example.crossdle.app.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 
 import com.example.crossdle.app.fragment.BoardFragment;
 import com.example.crossdle.R;
@@ -25,14 +23,7 @@ public class GameActivity extends AppCompatActivity {
 
         BoardView view = new BoardView();
 
-        board = new Board(view,
-            ' ', 'T', ' ', ' ', ' ', ' ',
-            ' ', 'E', ' ', 'S', ' ', ' ',
-            ' ', 'S', 'E', 'N', 'D', ' ',
-            ' ', 'T', ' ', 'A', ' ', ' ',
-            ' ', ' ', ' ', 'K', ' ', ' ',
-            ' ', ' ', ' ', 'E', ' ', ' '
-        );
+        board = new Board(view, Board.TEST_LAYOUT);
 
         keyboardFragment = KeyboardFragment.frame(this, R.id.game_fragmentView_keyboard, board);
         boardFragment = BoardFragment.frame(this, R.id.game_fragmentView_board, board);

@@ -9,6 +9,15 @@ import java.util.Queue;
 
 public class Board implements Serializable
 {
+    public static final char[] TEST_LAYOUT = new char[] {
+        ' ', 'T', ' ', ' ', ' ', ' ',
+        ' ', 'E', ' ', 'S', ' ', ' ',
+        ' ', 'S', 'E', 'N', 'D', ' ',
+        ' ', 'T', ' ', 'A', ' ', ' ',
+        ' ', ' ', ' ', 'K', ' ', ' ',
+        ' ', ' ', ' ', 'E', ' ', ' '
+    };
+
     private int DEFAULT_SIZE = 6;
 
     private final BoardView view;
@@ -110,7 +119,7 @@ public class Board implements Serializable
 
     private void linkCells(Cell[][] data) {
         for (int y = 0; y < size; y++) {
-            for (int x = 0; x < DEFAULT_SIZE; x++) {
+            for (int x = 0; x < size; x++) {
                 int nextIndex = 0;
                 Cell up = null;
                 Cell right = null;
@@ -143,6 +152,7 @@ public class Board implements Serializable
     }
 
     public void draw() {
+        if (view == null) { return; }
         view.draw(data);
     }
 }
