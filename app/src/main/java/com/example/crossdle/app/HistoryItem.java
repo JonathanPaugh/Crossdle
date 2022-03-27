@@ -13,15 +13,15 @@ public class HistoryItem implements Serializable {
     private LocalTime time;
     private int words;
     private int attempts;
-    private Board board;
+    private char[] layout;
 
-    public HistoryItem(FragmentActivity activity, String gameId, LocalTime time, int words, int attempts, Board board) {
+    public HistoryItem(FragmentActivity activity, String gameId, LocalTime time, int words, int attempts, char[] layout) {
         this.activity = activity;
         this.gameId = gameId;
         this.time = time;
         this.words = words;
         this.attempts = attempts;
-        this.board = board;
+        this.layout = layout;
     }
 
     public FragmentActivity getActivity() { return activity; }
@@ -33,5 +33,5 @@ public class HistoryItem implements Serializable {
         return words;
     }
     public int getAttempts() { return attempts; }
-    public Board getBoard() { return board; }
+    public char[] getLayout() { return layout; }
 }

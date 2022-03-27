@@ -2,15 +2,19 @@ package com.example.crossdle.app.activity;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 
 import com.example.crossdle.R;
 import com.example.crossdle.app.HistoryItem;
+import com.example.crossdle.app.fragment.BoardFragment;
 import com.example.crossdle.app.fragment.HistoryItemFragment;
 import com.example.crossdle.game.Board;
+import com.example.crossdle.game.BoardView;
 
 import java.time.LocalTime;
 
@@ -19,10 +23,9 @@ public class HistoryActivity extends FragmentActivity {
     private FragmentStateAdapter adapter;
 
     private HistoryItem[] items = new HistoryItem[] {
-        new HistoryItem(this, "#247", LocalTime.now(), 5, 10, new Board(null, Board.TEST_LAYOUT)),
-        new HistoryItem(this, "#246", LocalTime.now(), 7, 9, new Board(null, Board.TEST_LAYOUT))
+            new HistoryItem(this, "#247", LocalTime.now(), 5, 10, Board.TEST_LAYOUT),
+            new HistoryItem(this, "#246", LocalTime.now(), 7, 9, Board.TEST_LAYOUT)
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

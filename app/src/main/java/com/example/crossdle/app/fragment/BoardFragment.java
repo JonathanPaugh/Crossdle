@@ -96,7 +96,7 @@ public class BoardFragment extends Fragment {
     public static BoardFragment frame(AppCompatActivity activity, int id, Board board) {
         BoardFragment fragment = BoardFragment.newInstance(board);
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.add(id, fragment);
+        transaction.replace(id, fragment);
         transaction.commit();
         return fragment;
     }
