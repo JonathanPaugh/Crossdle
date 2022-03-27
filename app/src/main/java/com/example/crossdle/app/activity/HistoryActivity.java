@@ -1,35 +1,61 @@
 package com.example.crossdle.app.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 
-import com.example.crossdle.app.HistoryRecyclerAdapter;
 import com.example.crossdle.R;
 import com.example.crossdle.app.HistoryItem;
+import com.example.crossdle.app.fragment.HistoryItemFragment;
 import com.example.crossdle.game.Board;
 
 import java.time.LocalTime;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends FragmentActivity {
+    private ViewPager2 viewPager;
+    private FragmentStateAdapter adapter;
+
+    private HistoryItem[] items = new HistoryItem[] {
+        new HistoryItem(this, "#247", LocalTime.now(), 5, 10, new Board(null, Board.TEST_LAYOUT)),
+        new HistoryItem(this, "#246", LocalTime.now(), 7, 9, new Board(null, Board.TEST_LAYOUT))
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-/*        updateRecycler(R.id.history_recyclerView, new HistoryItem[] {
-            new HistoryItem(this, LocalTime.now(), 5, 10, new Board('A')),
-            new HistoryItem(this, LocalTime.now(), 2, 4, new Board('B')),
-            new HistoryItem(this, LocalTime.now(), 100, 200, new Board('C')),
-        });*/
+
+        viewPager = findViewById(R.id.history_viewPager);
+        adapter = new HistoryPagerAdapter(this);
+        viewPager.setAdapter(adapter);
     }
 
-    private void updateRecycler(int recyclerViewId, HistoryItem[] data) {
-        RecyclerView recycler = findViewById(recyclerViewId);
-        HistoryRecyclerAdapter adapter = new HistoryRecyclerAdapter(data);
-        recycler.setAdapter(adapter);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() <= 0) {
+            super.onBackPressed();
+        } else {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        }
+    }
+
+    private class HistoryPagerAdapter extends FragmentStateAdapter {
+        public HistoryPagerAdapter(FragmentActivity activity) {
+            super(activity);
+        }
+
+        @Override
+        public Fragment createFragment(int position) {
+            return HistoryItemFragment.newInstance(items[position]);
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.length;
+        }
     }
 }
