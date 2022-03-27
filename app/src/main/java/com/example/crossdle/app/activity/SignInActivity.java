@@ -27,7 +27,7 @@ import java.util.List;
 
 //https://firebase.google.com/docs/auth/android/password-auth?authuser=0
 
-public class MainActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         mAuth = FirebaseAuth.getInstance();
-        createSignInIntent();
     }
     // [START auth_fui_create_launcher]
     // See: https://developer.android.com/training/basics/intents/result
@@ -62,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
-                .setLogo(R.drawable.crossdle_logos)      // Set logo drawable
-//                .setTheme(R.style.Base_Theme_AppCompat_Dialog)      // Set theme
                 .build();
         signInLauncher.launch(signInIntent);
         // [END auth_fui_create_intent]
