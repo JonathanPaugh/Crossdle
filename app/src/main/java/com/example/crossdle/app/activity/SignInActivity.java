@@ -31,13 +31,17 @@ public class SignInActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
+    Intent intent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        intent = new Intent(this, MainActivity.class);
+
         mAuth = FirebaseAuth.getInstance();
+        createSignInIntent();
     }
     // [START auth_fui_create_launcher]
     // See: https://developer.android.com/training/basics/intents/result
@@ -61,6 +65,8 @@ public class SignInActivity extends AppCompatActivity {
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
+                .setLogo(R.drawable.crossdle_logos)      // Set logo drawable
+//                .setTheme(R.style.Base_Theme_AppCompat_Dialog)      // Set theme
                 .build();
         signInLauncher.launch(signInIntent);
         // [END auth_fui_create_intent]
@@ -72,6 +78,8 @@ public class SignInActivity extends AppCompatActivity {
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            startActivity(intent);
+            System.out.println("hello");
             // ...
         } else {
             // Sign in failed. If response is null the user canceled the
@@ -94,90 +102,4 @@ public class SignInActivity extends AppCompatActivity {
                 });
         // [END auth_fui_signout]
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser == null){
-//            startActivity(new Intent(this, MainActivity.class));
-//        }
-//    }
-//
-//    private void createAccount(String email, String password) {
-//        // [START create_user_with_email]
-//        mAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "createUserWithEmail:success");
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                            Toast.makeText(SignInActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
-//                        }
-//                    }
-//                });
-//        // [END create_user_with_email]
-//    }
-//
-//    private void signIn(String email, String password) {
-//        // [START sign_in_with_email]
-//        mAuth.signInWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "signInWithEmail:success");
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-//                            Toast.makeText(SignInActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
-//                        }
-//                    }
-//                });
-//        // [END sign_in_with_email]
-//    }
-//
-//    public void signOut() {
-//        // [START auth_sign_out]
-//        FirebaseAuth.getInstance().signOut();
-//        // [END auth_sign_out]
-//    }
-//    private void reload() { }
-//    private void updateUI(FirebaseUser user) {
-//
-//    }
 }

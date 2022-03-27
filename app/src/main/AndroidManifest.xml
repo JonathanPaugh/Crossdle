@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Crossdle">
         <activity
-            android:name=".app.activity.SignInActivity"
+            android:name=".app.activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".app.popup.FinishedGamePopup"
@@ -28,7 +28,7 @@
             android:name=".app.activity.GameActivity"
             android:exported="true" />
         <activity
-            android:name=".app.activity.MainActivity"
+            android:name=".app.activity.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

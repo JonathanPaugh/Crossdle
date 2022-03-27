@@ -62,4 +62,11 @@
     <string name="keyboard_button_enter">&gt;</string>
     <string name="keyboard_button_back">&lt;</string>
 
+    <!-- Menu -->
+
+    <string name="play_daily_crossdle">Daily Crossdle</string>
+    <string name="play_random_crossdle">Random Crossdle</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+
 </resources>
