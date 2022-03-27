@@ -66,7 +66,7 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
             attemptsView.setText(Integer.toString(attempts));
         }
         public void setPreview(AppCompatActivity activity, Board board) {
-            BoardFragment.displayFragment(activity, R.id.historyItem_fragmentView_preview, board);
+            BoardFragment.frame(activity, R.id.historyItem_fragmentView_preview, board);
         }
     }
 }
