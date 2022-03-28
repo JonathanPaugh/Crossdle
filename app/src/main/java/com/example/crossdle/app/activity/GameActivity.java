@@ -64,6 +64,14 @@ public class GameActivity extends AppCompatActivity {
         mediaPlayer.start();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        mediaPlayer.stop();
+        mediaPlayer.release();
+    }
+
     public void win() {
         int duration = 2000;
 
@@ -71,8 +79,6 @@ public class GameActivity extends AppCompatActivity {
         animateWin(view, duration);
 
         view.postDelayed(() -> {
-            mediaPlayer.stop();
-            mediaPlayer.release();
             Intent intent = new Intent(this, FinishedGamePopup.class);
             startActivity(intent);
         }, (long)(duration * 0.7));

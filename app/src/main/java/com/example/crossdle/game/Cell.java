@@ -132,13 +132,15 @@ public class Cell implements Serializable
             State state = getState();
             if (selected) {
                 GradientDrawable background = new GradientDrawable();
+                background.setColor(COLOR_HIDDEN);
                 background.setCornerRadius(SELECTED_RADIUS);
+                background.setStroke(SELECTED_STROKE, COLOR_SELECTED);
+                if (attempt == Character.MIN_VALUE || attempt == value) {
+                    background.setColor(state.getColor());
+                }
                 if (active) {
                     background.setColor(COLOR_SELECTED);
                     background.setStroke(SELECTED_STROKE, COLOR_ACTIVE);
-                } else {
-                    background.setColor(COLOR_HIDDEN);
-                    background.setStroke(SELECTED_STROKE, COLOR_SELECTED);
                 }
                 view.setBackground(background);
             } else {

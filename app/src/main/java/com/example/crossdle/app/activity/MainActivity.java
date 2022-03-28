@@ -2,15 +2,11 @@ package com.example.crossdle.app.activity;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -31,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private MediaPlayer mediaPlayer;
 
+    private boolean settingsOpen = false;
+    private boolean stopMusic = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         settings.setOnClickListener(this::onOpenSettings);
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.menu_song);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
     }
 
     @Override
@@ -64,9 +58,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         View layoutView = findViewById(R.id.layout_main);
 
-        int fadeDuration = 2000;
-        animFadeIn(layoutView, fadeDuration);
-        layoutView.postDelayed(() -> animSlideIn(findViewById(R.id.layout_main)), (long)(fadeDuration * 0.5));
+        if (!settingsOpen) {
+            int fadeDuration = 2000;
+            animFadeIn(layoutView, fadeDuration);
+            layoutView.postDelayed(() -> animSlideIn(findViewById(R.id.layout_main)), (long)(fadeDuration * 0.5));
+
+            mediaPlayer = MediaPlayer.create(this, R.raw.menu_song);
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+        } else {
+            settingsOpen = false;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (!settingsOpen) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
     }
 
     private void animFadeIn(View view, int duration) { ;
@@ -115,20 +127,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onOpenSettings(View view) {
+        settingsOpen = true;
         Intent intent = new Intent(this, SettingsPopup.class);
         startActivity(intent);
     }
 
     private void changeActivity(View view) {
         if (view.getId() == R.id.button_main_daily_crossdle)  {
-            mediaPlayer.stop();
-            mediaPlayer.release();
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
         }
         if (view.getId() == R.id.button_main_random_crossdle) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra(GameActivity.ARG_TYPE, true);
             startActivity(intent);
