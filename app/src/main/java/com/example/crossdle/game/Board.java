@@ -1,8 +1,5 @@
 package com.example.crossdle.game;
 
-import android.view.View;
-import android.widget.TextView;
-
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -67,6 +64,7 @@ public class Board implements Serializable
     public void clickKey(char character) {
         if (!active) { return; }
         if (!getSelection().isSet()) { return; }
+        animateCell(getSelection().getCurrent());
         getSelection().next(character);
         draw();
     }
@@ -173,5 +171,11 @@ public class Board implements Serializable
     public void draw() {
         if (view == null) { return; }
         view.draw(data);
+    }
+
+    public void animateCell(Cell cell) {
+        if (view == null) { return; }
+        if (cell == null) return;
+        view.animate(cell);
     }
 }

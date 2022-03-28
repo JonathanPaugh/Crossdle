@@ -2,7 +2,12 @@ package com.example.crossdle.game;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+
+import com.example.crossdle.R;
 
 public class Cell
 {
@@ -121,7 +126,7 @@ public class Cell
             if (selected) {
                 GradientDrawable background = new GradientDrawable();
                 background.setCornerRadius(SELECTED_RADIUS);
-                background.setColor(state.getColor());
+                background.setColor(COLOR_HIDDEN);
                 if (active) {
                     background.setStroke(SELECTED_STROKE, COLOR_ACTIVE);
                 } else {
@@ -134,6 +139,11 @@ public class Cell
         } else {
             view.setBackgroundColor(COLOR_EMPTY);
         }
+    }
+
+    public void animate(View view) {
+        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.bounce);
+        view.startAnimation(animation);
     }
 
     private class Neighbours

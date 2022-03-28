@@ -11,7 +11,7 @@
         android:theme="@style/Theme.Crossdle">
         <activity
             android:name=".app.activity.MainActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".app.popup.FinishedGamePopup"
             android:exported="false" />
