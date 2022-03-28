@@ -63,16 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaPlayer = MediaPlayer.create(this, R.raw.menu_song);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
-
-//        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-//        Intent intent = getIntent();
-//        if (intent != null){
-//            String musicVolume = intent.getStringExtra("music volume");
-//            String  effectsVolume = intent.getStringExtra("effects volume");
-//            if(musicVolume != null){
-//                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, Integer.parseInt(musicVolume), 0);
-//            }
-//        }
     }
 
     private void animFadeIn(View view, int duration) { ;
