@@ -15,7 +15,7 @@ import com.example.crossdle.app.activity.MainActivity;
 
 import java.util.List;
 
-public class SettingsPopup extends Activity implements View.OnClickListener{
+public class SettingsPopup extends Activity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

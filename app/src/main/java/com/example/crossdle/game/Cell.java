@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.example.crossdle.R;
 
-public class Cell
+import java.io.Serializable;
+
+public class Cell implements Serializable
 {
     public enum State
     {
@@ -33,17 +35,19 @@ public class Cell
     private static final int COLOR_WRONG = Color.rgb(120, 124, 126);
     private static final int COLOR_HINT = Color.rgb(201, 180, 88);
     private static final int COLOR_CORRECT = Color.rgb(106, 170, 100);
-    private static final int COLOR_SELECTED = Color.BLUE;
-    private static final int COLOR_ACTIVE = Color.MAGENTA;
+    private static final int COLOR_SELECTED = Color.rgb(168, 209, 223);
+    private static final int COLOR_ACTIVE = Color.rgb(0,255,255);
 
-    private static final int SELECTED_STROKE = 6;
-    private static final int SELECTED_RADIUS = 3;
+    private static final int SELECTED_STROKE = 7;
+    private static final int SELECTED_RADIUS = 5;
 
     private final int x;
     private final int y;
     private final char data;
 
     private char value;
+    private char attempt;
+
     private boolean selected;
     private boolean active;
 
@@ -60,20 +64,17 @@ public class Cell
 
     public char getData() { return data; }
 
-    public void setValue(char value) {
-        this.value = value;
+    public Cell getNeighbour(Word.Orientation orientation, boolean next) {
+        return neighbours.get(orientation, next);
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
+    public Word getWord(Word.Orientation orientation) {
+        Cell cell = this;
+        while (!cell.isHead(orientation)) {
+            cell = cell.getNeighbour(orientation, false);
+        }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public boolean isCorrect() {
-        return this.value == data;
+        return new Word(cell, orientation);
     }
 
     public State getState() {
@@ -88,48 +89,55 @@ public class Cell
         }
     }
 
+    public void setValue(char value) {
+        this.value = value;
+    }
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public void setNeighbours(Cell up, Cell right, Cell down, Cell left) {
         this.neighbours = new Neighbours(up, right, down, left);
     }
 
-    public Cell getNeighbour(Word.Orientation orientation, boolean next) {
-        return neighbours.get(orientation, next);
+    public void setAttempt(char value) { attempt = value; }
+    public void clearAttempt() { attempt = Character.MIN_VALUE; }
+    public void acceptAttempt() {
+        value = attempt;
+        attempt = Character.MIN_VALUE;
     }
 
-    public Word getWord(Word.Orientation orientation) {
-        Cell cell = this;
-        while (!cell.isHead(orientation)) {
-            cell = cell.getNeighbour(orientation, false);
-        }
-
-        return new Word(cell, orientation);
+    public boolean isSet() { return data != Character.MIN_VALUE && !Character.isSpaceChar(data); }
+    public boolean isCorrect() {
+        return this.value == data;
     }
-
-    private boolean wordsContainIncorrect(char character) {
-        return getWord(Word.Orientation.Horizontal).containsIncorrect(character)
-               || getWord(Word.Orientation.Vertical).containsIncorrect(character);
-    }
-
-    public boolean isSet() {
-        return data != Character.MIN_VALUE && !Character.isSpaceChar(data);
-    }
+    public boolean isAttempted() { return attempt != Character.MIN_VALUE; }
 
     private boolean isHead(Word.Orientation orientation) {
         Cell neighbour = neighbours.get(orientation, false);
         return neighbour == null || !neighbour.isSet();
     }
 
+    private boolean wordsContainIncorrect(char character) {
+        return getWord(Word.Orientation.Horizontal).containsIncorrect(character)
+                || getWord(Word.Orientation.Vertical).containsIncorrect(character);
+    }
+
     public void draw(TextView view) {
         if (isSet()) {
-            view.setText(String.valueOf(value));
+            view.setText(String.valueOf(attempt != Character.MIN_VALUE ? attempt : value));
             State state = getState();
             if (selected) {
                 GradientDrawable background = new GradientDrawable();
                 background.setCornerRadius(SELECTED_RADIUS);
-                background.setColor(COLOR_HIDDEN);
                 if (active) {
+                    background.setColor(COLOR_SELECTED);
                     background.setStroke(SELECTED_STROKE, COLOR_ACTIVE);
                 } else {
+                    background.setColor(COLOR_HIDDEN);
                     background.setStroke(SELECTED_STROKE, COLOR_SELECTED);
                 }
                 view.setBackground(background);
@@ -146,7 +154,7 @@ public class Cell
         view.startAnimation(animation);
     }
 
-    private class Neighbours
+    private class Neighbours implements Serializable
     {
         public final Cell up;
         public final Cell right;

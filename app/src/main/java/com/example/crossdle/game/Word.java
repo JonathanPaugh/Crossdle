@@ -2,10 +2,11 @@ package com.example.crossdle.game;
 
 import android.view.View;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Word
+public class Word implements Serializable
 {
     public enum Orientation
     {
@@ -19,6 +20,20 @@ public class Word
     public Word(Cell start, Orientation orientation) {
         this.start = start;
         this.orientation = orientation;
+    }
+
+    public boolean isValid() {
+        return true;
+    }
+
+    public boolean isFilled() {
+        for (Cell cell : getCells()) {
+            if (!cell.isAttempted()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public int getSize() {
@@ -48,6 +63,17 @@ public class Word
         }
 
         return cellArray;
+    }
+
+    public boolean containsCell(Cell cell) {
+        boolean found = false;
+        for (Cell wordCell : getCells()) {
+            if (wordCell == cell) {
+                found = true;
+            }
+        }
+
+        return found;
     }
 
     public boolean containsIncorrect(char character) {

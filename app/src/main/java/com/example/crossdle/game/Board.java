@@ -1,5 +1,10 @@
 package com.example.crossdle.game;
 
+import android.content.Intent;
+
+import com.example.crossdle.app.popup.FinishedGamePopup;
+import com.example.crossdle.app.popup.SettingsPopup;
+
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -25,6 +30,8 @@ public class Board implements Serializable
     private boolean active = true;
 
     private Selection selection = new Selection();
+
+    private transient Runnable onWin;
 
     // For Reference //
     private static final String[] COORDINATE_SYSTEM =
@@ -61,6 +68,10 @@ public class Board implements Serializable
         this.active = active;
     }
 
+    public void setOnWin(Runnable runnable) {
+        onWin = runnable;
+    }
+
     public void clickKey(char character) {
         if (!active) { return; }
         if (!getSelection().isSet()) { return; }
@@ -70,9 +81,12 @@ public class Board implements Serializable
     }
 
     public void clickEnter() {
+        if (!active) { return; }
         if (!selection.isSet()) {
             return;
         }
+        confirm();
+        draw();
     }
 
     public void clickBack() {
@@ -82,17 +96,59 @@ public class Board implements Serializable
         draw();
     }
 
+    public void confirm() {
+        Word word = selection.getWord();
+
+        if (!word.isValid()) {
+            return;
+        }
+
+        if (!word.isFilled()) {
+            return;
+        }
+
+        selection.confirm();
+
+        if (isComplete()) {
+            win();
+        }
+    }
+
+    private void win() {
+        if (onWin != null) {
+            onWin.run();
+        }
+    }
+
+    private boolean isComplete() {
+        for (int y = 0; y < data.length; y++) {
+            for (int x = 0; x < data[y].length; x++) {
+                Cell cell = data[y][x];
+                if (cell.isSet() && !cell.isCorrect()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public void select(int x, int y) {
         if (!active) { return; }
 
         Cell cell = getCell(x, y);
 
+        if (selection.containsCell(cell)) {
+            selection.setCurrent(cell);
+            draw();
+            return;
+        }
+
+        selection.reset();
+
         if (cell.isSet()) {
             Word horizontalWord = cell.getWord(Word.Orientation.Horizontal);
             Word verticalWord = cell.getWord(Word.Orientation.Vertical);
             selection.update(horizontalWord.getSize() > 1 ? horizontalWord : verticalWord);
-        } else {
-            selection.update(null);
         }
 
         draw();
@@ -183,6 +239,6 @@ public class Board implements Serializable
     public void animateCell(Cell cell) {
         if (view == null) { return; }
         if (cell == null) return;
-        view.animate(cell);
+        view.animateCell(cell);
     }
 }

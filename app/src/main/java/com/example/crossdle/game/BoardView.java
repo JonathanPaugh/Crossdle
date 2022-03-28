@@ -1,12 +1,16 @@
 package com.example.crossdle.game;
 
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
 import com.example.crossdle.R;
 
+import java.io.Serializable;
 import java.util.function.Supplier;
 
-public class BoardView {
-    private Supplier<View> viewHandler;
+public class BoardView implements Serializable {
+    private transient Supplier<View> viewHandler;
 
     private static final int[][] LAYOUT = new int[][]
     {
@@ -32,7 +36,7 @@ public class BoardView {
         }
     }
 
-    public void animate(Cell cell) {
+    public void animateCell(Cell cell) {
         View view = viewHandler.get();
         cell.animate(view.findViewById(LAYOUT[cell.getY()][cell.getX()]));
     }
