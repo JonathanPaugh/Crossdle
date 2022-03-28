@@ -25,7 +25,8 @@
         android:text="@string/game_heading_daily"
         android:textAlignment="gravity"
         android:textColor="@color/black"
-        android:textSize="32sp" />
+        android:textSize="32sp"
+        android:visibility="visible" />
 
     <FrameLayout
         android:layout_width="match_parent"

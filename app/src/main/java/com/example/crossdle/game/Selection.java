@@ -5,6 +5,10 @@ public class Selection
     private Word word;
     private Cell current;
 
+    public Cell getCurrent() {
+        return current;
+    }
+
     private void setCurrent(Cell cell) {
         if (current != null) { current.setActive(false); }
         if (cell == null) { return; }

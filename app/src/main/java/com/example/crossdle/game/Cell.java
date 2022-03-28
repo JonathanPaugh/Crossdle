@@ -2,19 +2,26 @@ package com.example.crossdle.game;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+
+import com.example.crossdle.R;
 
 public class Cell
 {
     public enum State
     {
         HIDDEN,
+        WRONG,
         HINT,
         CORRECT;
 
         public int getColor() {
             switch (this) {
                 default: return Cell.COLOR_HIDDEN;
+                case WRONG: return Cell.COLOR_WRONG;
                 case HINT: return Cell.COLOR_HINT;
                 case CORRECT: return Cell.COLOR_CORRECT;
             }
@@ -23,8 +30,9 @@ public class Cell
 
     private static final int COLOR_EMPTY = Color.BLACK;
     private static final int COLOR_HIDDEN = Color.WHITE;
-    private static final int COLOR_HINT = Color.YELLOW;
-    private static final int COLOR_CORRECT = Color.GREEN;
+    private static final int COLOR_WRONG = Color.rgb(120, 124, 126);
+    private static final int COLOR_HINT = Color.rgb(201, 180, 88);
+    private static final int COLOR_CORRECT = Color.rgb(106, 170, 100);
     private static final int COLOR_SELECTED = Color.BLUE;
     private static final int COLOR_ACTIVE = Color.MAGENTA;
 
@@ -73,6 +81,8 @@ public class Cell
             return State.CORRECT;
         } else if (wordsContainIncorrect(this.value)) {
             return State.HINT;
+        } else if (this.value != Character.MIN_VALUE) {
+            return State.WRONG;
         } else {
             return State.HIDDEN;
         }
@@ -116,7 +126,7 @@ public class Cell
             if (selected) {
                 GradientDrawable background = new GradientDrawable();
                 background.setCornerRadius(SELECTED_RADIUS);
-                background.setColor(state.getColor());
+                background.setColor(COLOR_HIDDEN);
                 if (active) {
                     background.setStroke(SELECTED_STROKE, COLOR_ACTIVE);
                 } else {
@@ -129,6 +139,11 @@ public class Cell
         } else {
             view.setBackgroundColor(COLOR_EMPTY);
         }
+    }
+
+    public void animate(View view) {
+        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.bounce);
+        view.startAnimation(animation);
     }
 
     private class Neighbours

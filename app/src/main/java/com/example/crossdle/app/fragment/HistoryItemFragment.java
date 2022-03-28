@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.crossdle.R;
 import com.example.crossdle.app.HistoryItem;
+import com.example.crossdle.game.Board;
+import com.example.crossdle.game.BoardView;
 
 public class HistoryItemFragment extends Fragment {
     private static final String ARG_ITEM = "ARG_ITEM";
@@ -47,6 +50,21 @@ public class HistoryItemFragment extends Fragment {
         timeView.setText(item.getTime().toString());
         wordsView.setText(String.valueOf(item.getWords()));
         attemptsView.setText(String.valueOf(item.getAttempts()));
+        setPreview(item.getLayout());
+    }
+
+    private void setPreview(char[] layout) {
+        BoardView boardView = new BoardView();
+        Board board = createBoard(boardView, layout);
+        BoardFragment.frame(getChildFragmentManager(), R.id.historyItem_fragmentView_preview, board);
+        boardView.setViewHandler(this::getView);
+    }
+
+    private Board createBoard(BoardView boardView, char[] layout) {
+        Board board = new Board(boardView, layout);
+        board.setActive(false);
+        board.forEach(cell -> cell.setValue(cell.getData()));
+        return board;
     }
 
     public static HistoryItemFragment newInstance(HistoryItem item) {

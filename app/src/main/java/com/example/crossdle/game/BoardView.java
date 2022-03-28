@@ -31,4 +31,9 @@ public class BoardView {
             }
         }
     }
+
+    public void animate(Cell cell) {
+        View view = viewHandler.get();
+        cell.animate(view.findViewById(LAYOUT[cell.getY()][cell.getX()]));
+    }
 }

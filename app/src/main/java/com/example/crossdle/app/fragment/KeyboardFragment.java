@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -110,9 +111,9 @@ public class KeyboardFragment extends Fragment {
         return fragment;
     }
 
-    public static KeyboardFragment frame(AppCompatActivity activity, int id, Board board) {
+    public static KeyboardFragment frame(FragmentManager manager, int id, Board board) {
         KeyboardFragment fragment = KeyboardFragment.newInstance(board);
-        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(id, fragment);
         transaction.commit();
         return fragment;
