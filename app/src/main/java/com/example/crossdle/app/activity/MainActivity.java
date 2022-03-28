@@ -16,17 +16,12 @@ import android.widget.Button;
 
 
 import com.example.crossdle.R;
-
+import com.example.crossdle.app.popup.SettingsPopup;
 
 
 //https://firebase.google.com/docs/auth/android/password-auth?authuser=0
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private Button dailyCrossword;
-    private Button randomCrossword;
-    private Button history;
-    private Button settings;
 
     private Button[] buttons;
 
@@ -70,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             view.postDelayed(() -> {
                 buttons[index].startAnimation(animation);
                 buttons[index].setVisibility(View.VISIBLE);
-            }, i * interval);
+            }, (long) i * interval);
         }
     }
 
@@ -87,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 view.postDelayed(() -> {
                     buttons[index].setVisibility(View.INVISIBLE);
                 }, duration);
-            }, i * interval);
+            }, (long) i * interval);
         }
     }
 
@@ -109,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
 
-        if (view.getId() == settings.getId()) {
+        if (view.getId() == R.id.button_main_settings) {
             Intent intent = new Intent(this, SettingsPopup.class);
             startActivity(intent);
         }
