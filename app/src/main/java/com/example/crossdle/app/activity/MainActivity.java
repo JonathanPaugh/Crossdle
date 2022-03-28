@@ -116,11 +116,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void changeActivity(View view) {
-        if (view.getId() == R.id.button_main_daily_crossdle
-            || view.getId() == R.id.button_main_random_crossdle) {
+        mediaPlayer.stop();
+        mediaPlayer.release();
+
+        if (view.getId() == R.id.button_main_daily_crossdle)  {
             Intent intent = new Intent(this, GameActivity.class);
-            mediaPlayer.stop();
-            mediaPlayer.release();
+            startActivity(intent);
+        }
+        if (view.getId() == R.id.button_main_random_crossdle) {
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra(GameActivity.ARG_TYPE, true);
             startActivity(intent);
         }
         if (view.getId() == R.id.button_main_history) {

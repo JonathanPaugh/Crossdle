@@ -35,6 +35,7 @@ public class FinishedGamePopup extends AppCompatActivity {
 
     public void onClickGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra(GameActivity.ARG_TYPE, true);
         startActivity(intent);
     }
 

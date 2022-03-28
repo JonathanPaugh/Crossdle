@@ -53,14 +53,14 @@ public class HistoryItemFragment extends Fragment {
         setPreview(item.getLayout());
     }
 
-    private void setPreview(char[] layout) {
+    private void setPreview(char[][] layout) {
         BoardView boardView = new BoardView();
         Board board = createBoard(boardView, layout);
         BoardFragment.frame(getChildFragmentManager(), R.id.historyItem_fragmentView_preview, board);
         boardView.setViewHandler(this::getView);
     }
 
-    private Board createBoard(BoardView boardView, char[] layout) {
+    private Board createBoard(BoardView boardView, char[][] layout) {
         Board board = new Board(boardView, layout);
         board.setActive(false);
         board.forEach(cell -> cell.setValue(cell.getData()));

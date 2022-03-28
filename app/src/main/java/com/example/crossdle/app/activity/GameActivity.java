@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class GameActivity extends AppCompatActivity {
+    public static final String ARG_TYPE = "ARG_TYPE";
+
     private Board board;
     private BoardFragment boardFragment;
     private KeyboardFragment keyboardFragment;
@@ -32,15 +34,22 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        BoardView view = new BoardView();
+        Intent intent = getIntent();
+
+        boolean type = intent.getBooleanExtra(ARG_TYPE, false);
 
         char[][] layout = null;
-        try {
-            layout = RandomBoardGenerator.returnBoard();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (type) {
+            try {
+                layout = RandomBoardGenerator.returnBoard();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            layout = Board.TEST_LAYOUT;
         }
 
+        BoardView view = new BoardView();
         board = new Board(view, layout);
 
         keyboardFragment = KeyboardFragment.frame(getSupportFragmentManager(), R.id.game_fragmentView_keyboard, board);
@@ -62,6 +71,8 @@ public class GameActivity extends AppCompatActivity {
         animateWin(view, duration);
 
         view.postDelayed(() -> {
+            mediaPlayer.stop();
+            mediaPlayer.release();
             Intent intent = new Intent(this, FinishedGamePopup.class);
             startActivity(intent);
         }, (long)(duration * 0.7));

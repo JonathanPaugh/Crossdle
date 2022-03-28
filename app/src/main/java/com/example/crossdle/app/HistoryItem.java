@@ -12,9 +12,9 @@ public class HistoryItem implements Serializable {
     private LocalTime time;
     private int words;
     private int attempts;
-    private char[] layout;
+    private char[][] layout;
 
-    public HistoryItem(String gameId, LocalTime time, int words, int attempts, char[] layout) {
+    public HistoryItem(String gameId, LocalTime time, int words, int attempts, char[][] layout) {
         this.gameId = gameId;
         this.time = time;
         this.words = words;
@@ -30,5 +30,5 @@ public class HistoryItem implements Serializable {
         return words;
     }
     public int getAttempts() { return attempts; }
-    public char[] getLayout() { return layout; }
+    public char[][] getLayout() { return layout; }
 }

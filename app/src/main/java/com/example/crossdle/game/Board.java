@@ -12,13 +12,13 @@ import java.util.function.Consumer;
 
 public class Board implements Serializable
 {
-    public static final char[] TEST_LAYOUT = new char[] {
-        ' ', 'T', ' ', ' ', ' ', ' ',
-        ' ', 'E', ' ', 'S', ' ', ' ',
-        ' ', 'S', 'E', 'N', 'D', ' ',
-        ' ', 'T', ' ', 'A', ' ', ' ',
-        ' ', ' ', ' ', 'K', ' ', ' ',
-        ' ', ' ', ' ', 'E', ' ', ' '
+    public static final char[][] TEST_LAYOUT = new char[][] {
+        new char[] {' ', 'T', ' ', ' ', ' ', ' ', },
+        new char[] {' ', 'E', ' ', 'S', ' ', ' ', },
+        new char[] {' ', 'S', 'E', 'N', 'D', ' ', },
+        new char[] {' ', 'T', ' ', 'A', ' ', ' ', },
+        new char[] {' ', ' ', ' ', 'K', ' ', ' ', },
+        new char[] {' ', ' ', ' ', 'E', ' ', ' '  },
     };
 
     private int DEFAULT_SIZE = 6;
