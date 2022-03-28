@@ -2,19 +2,23 @@ package com.example.crossdle.app.activity;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 
 
 import com.example.crossdle.R;
+import com.example.crossdle.app.popup.SettingsPopup;
 
-
-
-//https://firebase.google.com/docs/auth/android/password-auth?authuser=0
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dailyCrossword.setOnClickListener(this);
         randomCrossword.setOnClickListener(this);
         history.setOnClickListener(this);
+        settings.setOnClickListener(this);
     }
 
     @Override
@@ -47,6 +52,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view.getId() == history.getId()) {
             Intent intent = new Intent(this, HistoryActivity.class);
+            startActivity(intent);
+        }
+
+        if (view.getId() == settings.getId()) {
+            Intent intent = new Intent(this, SettingsPopup.class);
             startActivity(intent);
         }
     }

@@ -17,7 +17,8 @@
             android:exported="false" />
         <activity
             android:name=".app.popup.SettingsPopup"
-            android:exported="false" />
+            android:theme="@style/settings_pop_up_style"
+            android:exported="true" />
         <activity
             android:name=".app.popup.HelpPopup"
             android:exported="false" />

@@ -71,9 +71,10 @@ public class SignInActivity extends AppCompatActivity {
         // Create and launch sign-in intent
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
+                .setIsSmartLockEnabled(false)
                 .setAvailableProviders(providers)
                 .setLogo(R.drawable.crossdle_logos)      // Set logo drawable
-//                .setTheme(R.style.Base_Theme_AppCompat_Dialog)      // Set theme
+                .setTheme(R.style.AppThemeFirebaseAuth)      // Set theme
                 .build();
         signInLauncher.launch(signInIntent);
         // [END auth_fui_create_intent]
@@ -107,8 +108,6 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     });
             startActivity(intent);
-            System.out.println(user.getDisplayName());
-                System.out.println(user.getEmail());
             }
             // ...
         } else {
