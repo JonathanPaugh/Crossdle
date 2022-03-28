@@ -6,6 +6,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -26,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button[] buttons;
 
     private Button settings;
+
+    private MediaPlayer mediaPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int fadeDuration = 2000;
         animFadeIn(layoutView, fadeDuration);
         layoutView.postDelayed(() -> animSlideIn(findViewById(R.id.layout_main)), (long)(fadeDuration * 0.5));
+
+
+
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.menu_song);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+
+//        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+//        Intent intent = getIntent();
+//        if (intent != null){
+//            String musicVolume = intent.getStringExtra("music volume");
+//            String  effectsVolume = intent.getStringExtra("effects volume");
+//            if(musicVolume != null){
+//                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, Integer.parseInt(musicVolume), 0);
+//            }
+//        }
     }
 
     private void animFadeIn(View view, int duration) { ;
@@ -107,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view.getId() == R.id.button_main_daily_crossdle
             || view.getId() == R.id.button_main_random_crossdle) {
             Intent intent = new Intent(this, GameActivity.class);
+            mediaPlayer.stop();
+            mediaPlayer.release();
             startActivity(intent);
         }
         if (view.getId() == R.id.button_main_history) {

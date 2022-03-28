@@ -2,6 +2,7 @@ package com.example.crossdle.app.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
@@ -15,6 +16,7 @@ public class GameActivity extends AppCompatActivity {
     private Board board;
     private BoardFragment boardFragment;
     private KeyboardFragment keyboardFragment;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,10 @@ public class GameActivity extends AppCompatActivity {
         boardFragment = BoardFragment.frame(getSupportFragmentManager(), R.id.game_fragmentView_board, board);
 
         view.setViewHandler(boardFragment::getView);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.game_song);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
     }
 
     @Override

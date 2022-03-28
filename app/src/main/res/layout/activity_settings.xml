@@ -8,7 +8,8 @@
     android:orientation="vertical"
     tools:context=".app.popup.SettingsPopup"
     android:background="@drawable/setting_background"
-    android:paddingBottom="10dp">
+    android:paddingBottom="16dp"
+    android:theme="@style/settings_pop_up_style">
 
     <TextView
         android:id="@+id/textView"
@@ -35,7 +36,7 @@
             android:textSize="16sp" />
 
         <SeekBar
-            android:id="@+id/seekBar4"
+            android:id="@+id/seekBar_settings_music_volume"
             android:layout_width="119dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
@@ -57,7 +58,7 @@
             android:textSize="16sp" />
 
         <SeekBar
-            android:id="@+id/seekBar5"
+            android:id="@+id/seekBar_settings_effects_volume"
             android:layout_width="128dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
