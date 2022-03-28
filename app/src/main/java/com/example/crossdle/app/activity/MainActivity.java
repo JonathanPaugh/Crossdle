@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View layoutView = findViewById(R.id.layout_main);
+
         settings = findViewById(R.id.button_main_settings);
 
         buttons = new Button[] {
@@ -53,16 +53,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         settings.setOnClickListener(this::onOpenSettings);
 
-        int fadeDuration = 2000;
-        animFadeIn(layoutView, fadeDuration);
-        layoutView.postDelayed(() -> animSlideIn(findViewById(R.id.layout_main)), (long)(fadeDuration * 0.5));
-
-
-
-
         mediaPlayer = MediaPlayer.create(this, R.raw.menu_song);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        View layoutView = findViewById(R.id.layout_main);
+
+        int fadeDuration = 2000;
+        animFadeIn(layoutView, fadeDuration);
+        layoutView.postDelayed(() -> animSlideIn(findViewById(R.id.layout_main)), (long)(fadeDuration * 0.5));
     }
 
     private void animFadeIn(View view, int duration) { ;
@@ -116,14 +120,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void changeActivity(View view) {
-        mediaPlayer.stop();
-        mediaPlayer.release();
-
         if (view.getId() == R.id.button_main_daily_crossdle)  {
+            mediaPlayer.stop();
+            mediaPlayer.release();
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
         }
         if (view.getId() == R.id.button_main_random_crossdle) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra(GameActivity.ARG_TYPE, true);
             startActivity(intent);

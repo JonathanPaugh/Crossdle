@@ -47,7 +47,7 @@ public class HistoryItemFragment extends Fragment {
         TextView attemptsView = view.findViewById(R.id.historyItem_textView_attempts);
 
         idView.setText(item.getGameId());
-        timeView.setText(item.getTime().toString());
+        timeView.setText(item.getTimeString());
         wordsView.setText(String.valueOf(item.getWords()));
         attemptsView.setText(String.valueOf(item.getAttempts()));
         setPreview(item.getLayout());

@@ -6,15 +6,16 @@ import com.example.crossdle.game.Board;
 
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.concurrent.TimeUnit;
 
 public class HistoryItem implements Serializable {
     private String gameId;
-    private LocalTime time;
+    private int time;
     private int words;
     private int attempts;
     private char[][] layout;
 
-    public HistoryItem(String gameId, LocalTime time, int words, int attempts, char[][] layout) {
+    public HistoryItem(String gameId, int time, int words, int attempts, char[][] layout) {
         this.gameId = gameId;
         this.time = time;
         this.words = words;
@@ -23,9 +24,17 @@ public class HistoryItem implements Serializable {
     }
 
     public String getGameId() { return gameId; }
-    public LocalTime getTime() {
+    public int getTime() {
         return time;
     }
+    public String getTimeString() {
+        return String.format("%d:%d",
+            TimeUnit.MILLISECONDS.toMinutes(time),
+            TimeUnit.MILLISECONDS.toSeconds(time) -
+            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))
+        );
+    }
+
     public int getWords() {
         return words;
     }

@@ -15,22 +15,33 @@ import com.example.crossdle.app.fragment.BoardFragment;
 import com.example.crossdle.app.fragment.HistoryItemFragment;
 import com.example.crossdle.game.Board;
 import com.example.crossdle.game.BoardView;
+import com.example.crossdle.game.RandomBoardGenerator;
 
+import java.io.IOException;
 import java.time.LocalTime;
 
 public class HistoryActivity extends FragmentActivity {
     private ViewPager2 viewPager;
     private FragmentStateAdapter adapter;
 
-    private HistoryItem[] items = new HistoryItem[] {
-            new HistoryItem("#247", LocalTime.now(), 5, 10, Board.TEST_LAYOUT),
-            new HistoryItem("#246", LocalTime.now(), 7, 9, Board.TEST_LAYOUT)
-    };
+    private HistoryItem[] items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
+        char[][] layout = null;
+        try {
+            layout = RandomBoardGenerator.returnBoard();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        items = new HistoryItem[] {
+            new HistoryItem("#247", 152345, 3, 9, Board.TEST_LAYOUT),
+            new HistoryItem("#246", 375229, 4, 17, layout)
+        };
 
         viewPager = findViewById(R.id.history_viewPager);
         adapter = new HistoryPagerAdapter(this);
