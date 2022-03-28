@@ -19,6 +19,7 @@ import com.example.crossdle.game.BoardView;
 import com.example.crossdle.game.RandomBoardGenerator;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class GameActivity extends AppCompatActivity {
     private Board board;
@@ -33,11 +34,14 @@ public class GameActivity extends AppCompatActivity {
 
         BoardView view = new BoardView();
 
+        char[][] layout = null;
         try {
-            board = new Board(view, RandomBoardGenerator.returnBoard());
+            layout = RandomBoardGenerator.returnBoard();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        board = new Board(view, layout);
 
         keyboardFragment = KeyboardFragment.frame(getSupportFragmentManager(), R.id.game_fragmentView_keyboard, board);
         boardFragment = BoardFragment.frame(getSupportFragmentManager(), R.id.game_fragmentView_board, board);

@@ -167,7 +167,7 @@ public class Board implements Serializable
 
         for (int y = 0; y < data.length; y++) {
             for (int x = 0; x < data[y].length; x++) {
-                data[y][x] = new Cell(rawData[y][x], x, y);
+                data[y][x] = new Cell(Character.toUpperCase(rawData[y][x]), x, y);
             }
         }
 
@@ -187,7 +187,7 @@ public class Board implements Serializable
         for (int y = 0; y < data.length; y++) {
             for (int x = 0; x < data[y].length; x++) {
                 if (!queue.isEmpty()) {
-                    data[y][x] = new Cell(queue.poll(), x, y);
+                    data[y][x] = new Cell(Character.toUpperCase(queue.poll()), x, y);
                 }
             }
         }
