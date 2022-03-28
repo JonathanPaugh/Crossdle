@@ -59,8 +59,7 @@
     <string name="keyboard_button_n">N</string>
     <string name="keyboard_button_m">M</string>
 
-    <string name="keyboard_button_enter">&gt;</string>
-    <string name="keyboard_button_back">&lt;</string>
+    <string name="keyboard_button_enter">ENTER</string>
 
     <!-- Menu -->
 

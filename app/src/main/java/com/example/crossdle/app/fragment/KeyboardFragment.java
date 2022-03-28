@@ -87,14 +87,16 @@ public class KeyboardFragment extends Fragment {
     public void onClickKey(View view) {
         board.clickKey(((TextView)view).getText().charAt(0));
     }
-
+    public void onClickEnter(View view) {
+        board.clickEnter();
+    }
     public void onClickBack(View view) {
         board.clickBack();
     }
 
     public void setup(View view) {
-        Button buttonBack = view.findViewById(KEY_BACK);
-        buttonBack.setOnClickListener(this::onClickBack);
+        view.findViewById(KEY_ENTER).setOnClickListener(this::onClickEnter);
+        view.findViewById(KEY_BACK).setOnClickListener(this::onClickBack);
         for (int y = 0; y < KEYS.length; y++) {
             for (int x = 0; x < KEYS[y].length; x++) {
                 Button buttonKey = view.findViewById(KEYS[y][x]);

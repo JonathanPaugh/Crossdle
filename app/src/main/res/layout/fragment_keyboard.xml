@@ -11,7 +11,7 @@
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
@@ -149,7 +149,7 @@
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="24sp">
 
@@ -275,7 +275,7 @@
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
@@ -283,12 +283,19 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginHorizontal="2sp"
-            android:layout_weight="1"
+            android:layout_weight=".3"
             android:backgroundTint="#777777"
             android:paddingVertical="24sp"
             android:text="@string/keyboard_button_enter"
             android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            app:icon="@drawable/ic_baseline_navigate_next_24"
+            app:iconGravity="end"
+            app:iconPadding="0dp"
+            app:iconSize="20dp"
+            app:iconTint="@color/white"
             tools:ignore="TouchTargetSizeCheck" />
 
         <Button
@@ -387,12 +394,15 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
             android:layout_marginHorizontal="2sp"
-            android:layout_weight="1"
+            android:layout_weight=".9"
             android:backgroundTint="#777777"
             android:paddingVertical="24sp"
-            android:text="@string/keyboard_button_back"
             android:textColor="#FFFFFF"
+            app:icon="@drawable/ic_baseline_arrow_back_24"
+            app:iconPadding="0dp"
+            app:iconTint="@color/white"
             tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>

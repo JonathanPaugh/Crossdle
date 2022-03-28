@@ -1,28 +1,55 @@
 package com.example.crossdle.game;
 
-public class Selection
+import java.io.Serializable;
+
+public class Selection implements Serializable
 {
     private Word word;
     private Cell current;
 
-    public Cell getCurrent() {
-        return current;
-    }
+    public Word getWord() { return word; }
+    public Cell getCurrent() { return current; }
 
-    private void setCurrent(Cell cell) {
+    public void setCurrent(Cell cell) {
         if (current != null) { current.setActive(false); }
         if (cell == null) { return; }
         current = cell;
         current.setActive(true);
     }
 
-    public boolean isSet() {
-        return word != null;
+    public boolean containsCell(Cell cell) {
+        if (word == null) {
+            return false;
+        }
+
+        return word.containsCell(cell);
+    }
+
+    public boolean isSet() { return word != null; }
+
+    public void confirm() {
+        if (word == null) { return; }
+
+        for (Cell cell : word.getCells()) {
+            cell.acceptAttempt();
+        }
+
+        update(null);
+    }
+
+    public void reset() {
+        if (word == null) { return; }
+
+        for (Cell cell : word.getCells()) {
+            cell.clearAttempt();
+        }
+
+        update(null);
     }
 
     public void next(char value) {
         Cell destination = current.getNeighbour(word.getOrientation(), true);
-        current.setValue(value);
+        current.setAttempt(value);
         if (destination == null || !destination.isSet()) {
             return;
         }
@@ -31,7 +58,7 @@ public class Selection
 
     public void prev() {
         Cell destination = current.getNeighbour(word.getOrientation(), false);
-        current.setValue(Character.MIN_VALUE);
+        current.setAttempt(Character.MIN_VALUE);
         if (destination == null || !destination.isSet()) {
             return;
         }
