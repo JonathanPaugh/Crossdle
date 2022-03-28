@@ -25,27 +25,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button[] buttons;
 
+    private Button settings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        View layoutView = findViewById(R.id.layout_main);
+        settings = findViewById(R.id.button_main_settings);
+
         buttons = new Button[] {
             findViewById(R.id.button_main_daily_crossdle),
             findViewById(R.id.button_main_random_crossdle),
             findViewById(R.id.button_main_history),
-            findViewById(R.id.button_main_settings)
+            settings
         };
 
         for (Button button: buttons) {
             button.setOnClickListener(this);
         }
 
-        View view = findViewById(R.id.layout_main);
+        settings.setOnClickListener(this::onOpenSettings);
 
         int fadeDuration = 2000;
-        animFadeIn(view, fadeDuration);
-        view.postDelayed(() -> animSlideIn(findViewById(R.id.layout_main)), (long)(fadeDuration * 0.5));
+        animFadeIn(layoutView, fadeDuration);
+        layoutView.postDelayed(() -> animSlideIn(findViewById(R.id.layout_main)), (long)(fadeDuration * 0.5));
     }
 
     private void animFadeIn(View view, int duration) { ;
@@ -93,6 +98,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         view.postDelayed(() -> changeActivity(view), timeout);
     }
 
+    public void onOpenSettings(View view) {
+        Intent intent = new Intent(this, SettingsPopup.class);
+        startActivity(intent);
+    }
+
     private void changeActivity(View view) {
         if (view.getId() == R.id.button_main_daily_crossdle
             || view.getId() == R.id.button_main_random_crossdle) {
@@ -101,11 +111,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view.getId() == R.id.button_main_history) {
             Intent intent = new Intent(this, HistoryActivity.class);
-            startActivity(intent);
-        }
-
-        if (view.getId() == R.id.button_main_settings) {
-            Intent intent = new Intent(this, SettingsPopup.class);
             startActivity(intent);
         }
     }

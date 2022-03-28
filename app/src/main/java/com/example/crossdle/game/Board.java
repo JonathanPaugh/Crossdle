@@ -69,10 +69,16 @@ public class Board implements Serializable
         draw();
     }
 
+    public void clickEnter() {
+        if (!selection.isSet()) {
+            return;
+        }
+    }
+
     public void clickBack() {
         if (!active) { return; }
-        if (!getSelection().isSet()) { return; }
-        getSelection().prev();
+        if (!selection.isSet()) { return; }
+        selection.prev();
         draw();
     }
 
@@ -88,7 +94,8 @@ public class Board implements Serializable
         } else {
             selection.update(null);
         }
-       draw();
+
+        draw();
     }
 
     public void forEach(Consumer<Cell> onNextCell) {
