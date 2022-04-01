@@ -1,10 +1,5 @@
 package com.example.crossdle.game;
 
-import android.content.Intent;
-
-import com.example.crossdle.app.popup.FinishedGamePopup;
-import com.example.crossdle.app.popup.SettingsPopup;
-
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -75,7 +70,7 @@ public class Board implements Serializable
     public void clickKey(char character) {
         if (!active) { return; }
         if (!getSelection().isSet()) { return; }
-        animateCell(getSelection().getCurrent());
+        animateAttempt(getSelection().getCurrent());
         getSelection().next(character);
         draw();
     }
@@ -100,10 +95,12 @@ public class Board implements Serializable
         Word word = selection.getWord();
 
         if (!word.isFilled()) {
+            animateInvalidWord(word);
             return;
         }
 
         if (!word.isAttemptValid()) {
+            animateInvalidWord(word);
             return;
         }
 
@@ -233,12 +230,20 @@ public class Board implements Serializable
 
     public void draw() {
         if (view == null) { return; }
-        view.draw(data);
+        view.drawBoard(data);
     }
 
-    public void animateCell(Cell cell) {
+    public void animateAttempt(Cell cell) {
         if (view == null) { return; }
-        if (cell == null) return;
-        view.animateCell(cell);
+        if (cell == null) { return; }
+        view.animateCellAttempt(cell);
+    }
+
+    public void animateInvalidWord(Word word) {
+        if (view == null) { return; }
+        if (word == null) { return; }
+        for (Cell cell : word.getCells()) {
+            view.animateCellInvalid(cell);
+        }
     }
 }

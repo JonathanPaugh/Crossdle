@@ -3,8 +3,10 @@ package com.example.crossdle.game;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
 import com.example.crossdle.R;
@@ -152,8 +154,15 @@ public class Cell implements Serializable
         }
     }
 
-    public void animate(View view) {
+    public void animateAttempt(View view) {
         Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.bounce);
+        view.startAnimation(animation);
+    }
+
+    public void animateInvalid(View view) {
+        int repeats = 3;
+        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.blink_anim);
+        animation.restrictDuration(animation.getDuration() * repeats);
         view.startAnimation(animation);
     }
 
