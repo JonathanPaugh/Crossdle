@@ -46,7 +46,7 @@ public class Board implements Serializable
         this.data = wrapData(size, data);
     }
 
-    public Board(BoardView view, char... data) {
+    public Board(BoardView view, char[] data) {
         this.view = view;
         this.size = DEFAULT_SIZE;
         this.data = wrapData(size, data);
@@ -99,11 +99,11 @@ public class Board implements Serializable
     public void confirm() {
         Word word = selection.getWord();
 
-        if (!word.isValid()) {
+        if (!word.isFilled()) {
             return;
         }
 
-        if (!word.isFilled()) {
+        if (!word.isAttemptValid()) {
             return;
         }
 
@@ -200,7 +200,7 @@ public class Board implements Serializable
     private void linkCells(Cell[][] data) {
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
-                int nextIndex = 0;
+                int nextIndex;
                 Cell up = null;
                 Cell right = null;
                 Cell down = null;

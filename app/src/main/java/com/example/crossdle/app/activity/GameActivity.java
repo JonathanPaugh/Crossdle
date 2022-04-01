@@ -14,12 +14,13 @@ import com.example.crossdle.app.fragment.BoardFragment;
 import com.example.crossdle.R;
 import com.example.crossdle.app.fragment.KeyboardFragment;
 import com.example.crossdle.app.popup.FinishedGamePopup;
+import com.example.crossdle.bank.WordBase;
 import com.example.crossdle.game.Board;
 import com.example.crossdle.game.BoardView;
-import com.example.crossdle.game.RandomBoardGenerator;
+import com.example.crossdle.bank.WordDictionary;
+import com.example.crossdle.game.BoardGenerator;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 public class GameActivity extends AppCompatActivity {
     public static final String ARG_TYPE = "ARG_TYPE";
@@ -34,14 +35,16 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        Intent intent = getIntent();
+        WordBase.load(this);
+        WordDictionary.load(this);
 
+        Intent intent = getIntent();
         boolean type = intent.getBooleanExtra(ARG_TYPE, false);
 
         char[][] layout = null;
         if (type) {
             try {
-                layout = RandomBoardGenerator.returnBoard();
+                layout = BoardGenerator.returnBoard();
             } catch (IOException e) {
                 e.printStackTrace();
             }

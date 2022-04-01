@@ -63,6 +63,7 @@ public class Cell implements Serializable
     public int getY() { return y; }
 
     public char getData() { return data; }
+    public char getAttempt() { return attempt; }
 
     public Cell getNeighbour(Word.Orientation orientation, boolean next) {
         return neighbours.get(orientation, next);

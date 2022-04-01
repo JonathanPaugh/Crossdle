@@ -2,23 +2,18 @@ package com.example.crossdle.app.activity;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.app.FragmentManager;
 import android.os.Bundle;
 
 import com.example.crossdle.R;
 import com.example.crossdle.app.HistoryItem;
-import com.example.crossdle.app.fragment.BoardFragment;
 import com.example.crossdle.app.fragment.HistoryItemFragment;
 import com.example.crossdle.game.Board;
-import com.example.crossdle.game.BoardView;
-import com.example.crossdle.game.RandomBoardGenerator;
+import com.example.crossdle.game.BoardGenerator;
 
 import java.io.IOException;
-import java.time.LocalTime;
 
 public class HistoryActivity extends FragmentActivity {
     private ViewPager2 viewPager;
@@ -33,7 +28,7 @@ public class HistoryActivity extends FragmentActivity {
 
         char[][] layout = null;
         try {
-            layout = RandomBoardGenerator.returnBoard();
+            layout = BoardGenerator.returnBoard();
         } catch (IOException e) {
             e.printStackTrace();
         }
