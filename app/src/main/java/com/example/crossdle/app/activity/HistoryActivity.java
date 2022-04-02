@@ -11,7 +11,7 @@ import com.example.crossdle.R;
 import com.example.crossdle.app.HistoryItem;
 import com.example.crossdle.app.fragment.HistoryItemFragment;
 import com.example.crossdle.game.Board;
-import com.example.crossdle.game.BoardGenerator;
+import com.example.crossdle.game.LayoutGenerator;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ public class HistoryActivity extends FragmentActivity {
 
         char[][] layout = null;
         try {
-            layout = BoardGenerator.returnBoard();
+            layout = LayoutGenerator.returnBoard();
         } catch (IOException e) {
             e.printStackTrace();
         }

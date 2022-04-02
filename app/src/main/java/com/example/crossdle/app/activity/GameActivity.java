@@ -18,7 +18,7 @@ import com.example.crossdle.bank.WordBase;
 import com.example.crossdle.game.Board;
 import com.example.crossdle.game.BoardView;
 import com.example.crossdle.bank.WordDictionary;
-import com.example.crossdle.game.BoardGenerator;
+import com.example.crossdle.game.LayoutGenerator;
 
 import java.io.IOException;
 
@@ -44,7 +44,7 @@ public class GameActivity extends AppCompatActivity {
         char[][] layout = null;
         if (type) {
             try {
-                layout = BoardGenerator.returnBoard();
+                layout = LayoutGenerator.returnBoard();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -59,6 +59,7 @@ public class GameActivity extends AppCompatActivity {
         boardFragment = BoardFragment.frame(getSupportFragmentManager(), R.id.game_fragmentView_board, board);
 
         board.setOnWin(this::win);
+        board.setOnLose(this::lose);
 
         view.setViewHandler(boardFragment::getView);
 
@@ -82,9 +83,18 @@ public class GameActivity extends AppCompatActivity {
         animateWin(view, duration);
 
         view.postDelayed(() -> {
-            Intent intent = new Intent(this, FinishedGamePopup.class);
-            startActivity(intent);
+            startFinishedGame();
         }, (long)(duration * 0.7));
+    }
+
+    public void lose() {
+        System.out.println("You Lose!");
+        startFinishedGame();
+    }
+
+    private void startFinishedGame() {
+        Intent intent = new Intent(this, FinishedGamePopup.class);
+        startActivity(intent);
     }
 
     private void animateWin(View view, int duration) {

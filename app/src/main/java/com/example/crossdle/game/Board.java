@@ -7,26 +7,29 @@ import java.util.function.Consumer;
 
 public class Board implements Serializable
 {
-    public static final char[][] TEST_LAYOUT = new char[][] {
-        new char[] {' ', 'T', ' ', ' ', ' ', ' ', },
-        new char[] {' ', 'E', ' ', 'S', ' ', ' ', },
-        new char[] {' ', 'S', 'E', 'N', 'D', ' ', },
-        new char[] {' ', 'T', ' ', 'A', ' ', ' ', },
-        new char[] {' ', ' ', ' ', 'K', ' ', ' ', },
-        new char[] {' ', ' ', ' ', 'E', ' ', ' '  },
-    };
+    public static final int DEFAULT_SIZE = 6;
+    public static final int DEFAULT_ATTEMPTS = 20;
 
-    private int DEFAULT_SIZE = 6;
+    public static final char EMPTY_LAYOUT_CELL = ' ';
+    public static final char[][] TEST_LAYOUT = new char[][] {
+        new char[] { ' ', 'T', ' ', ' ', ' ', ' ', },
+        new char[] { ' ', 'E', ' ', 'S', ' ', ' ', },
+        new char[] { ' ', 'S', 'E', 'N', 'D', ' ', },
+        new char[] { ' ', 'T', ' ', 'A', ' ', ' ', },
+        new char[] { ' ', ' ', ' ', 'K', ' ', ' ', },
+        new char[] { ' ', ' ', ' ', 'E', ' ', ' '  },
+    };
 
     private final BoardView view;
     private final Cell[][] data;
     private final int size;
 
+    private int attempts = DEFAULT_ATTEMPTS;
     private boolean active = true;
-
     private Selection selection = new Selection();
 
     private transient Runnable onWin;
+    private transient Runnable onLose;
 
     // For Reference //
     private static final String[] COORDINATE_SYSTEM =
@@ -66,6 +69,34 @@ public class Board implements Serializable
     public void setOnWin(Runnable runnable) {
         onWin = runnable;
     }
+    public void setOnLose(Runnable runnable) {
+        onLose = runnable;
+    }
+
+    private boolean isComplete() {
+        for (int y = 0; y < data.length; y++) {
+            for (int x = 0; x < data[y].length; x++) {
+                Cell cell = data[y][x];
+                if (cell.isSet() && !cell.isCorrect()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void forEach(Consumer<Cell> onNextCell) {
+        for (int y = 0; y < data.length; y++) {
+            for (int x = 0; x < data[y].length; x++) {
+                onNextCell.accept(data[y][x]);
+            }
+        }
+    }
+
+    public void clickCell(int x, int y) {
+        select(x, y);
+        draw();
+    }
 
     public void clickKey(char character) {
         if (!active) { return; }
@@ -80,7 +111,7 @@ public class Board implements Serializable
         if (!selection.isSet()) {
             return;
         }
-        confirm();
+        guess();
         draw();
     }
 
@@ -91,7 +122,7 @@ public class Board implements Serializable
         draw();
     }
 
-    public void confirm() {
+    public void guess() {
         Word word = selection.getWord();
 
         if (!word.isFilled()) {
@@ -109,24 +140,12 @@ public class Board implements Serializable
         if (isComplete()) {
             win();
         }
-    }
 
-    private void win() {
-        if (onWin != null) {
-            onWin.run();
-        }
-    }
+        attempts -= 1;
 
-    private boolean isComplete() {
-        for (int y = 0; y < data.length; y++) {
-            for (int x = 0; x < data[y].length; x++) {
-                Cell cell = data[y][x];
-                if (cell.isSet() && !cell.isCorrect()) {
-                    return false;
-                }
-            }
+        if (attempts <= 0) {
+            lose();
         }
-        return true;
     }
 
     public void select(int x, int y) {
@@ -136,7 +155,6 @@ public class Board implements Serializable
 
         if (selection.containsCell(cell)) {
             selection.setCurrent(cell);
-            draw();
             return;
         }
 
@@ -147,16 +165,16 @@ public class Board implements Serializable
             Word verticalWord = cell.getWord(Word.Orientation.Vertical);
             selection.update(horizontalWord.getSize() > 1 ? horizontalWord : verticalWord);
         }
-
-        draw();
     }
 
-    public void forEach(Consumer<Cell> onNextCell) {
-        for (int y = 0; y < data.length; y++) {
-            for (int x = 0; x < data[y].length; x++) {
-                onNextCell.accept(data[y][x]);
-            }
-        }
+    private void win() {
+        if (onWin == null) { return; }
+        onWin.run();
+    }
+
+    private void lose() {
+        if (onLose == null) { return; }
+        onLose.run();
     }
 
     private Cell[][] convertData(char[][] rawData) {
@@ -231,6 +249,7 @@ public class Board implements Serializable
     public void draw() {
         if (view == null) { return; }
         view.drawBoard(data);
+        view.updateAttempts(attempts);
     }
 
     public void animateAttempt(Cell cell) {
@@ -245,5 +264,16 @@ public class Board implements Serializable
         for (Cell cell : word.getCells()) {
             view.animateCellInvalid(cell);
         }
+    }
+
+    public static char[][] generateEmptyLayout(int size) {
+        char[][] board = new char [size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                board[i][j] = EMPTY_LAYOUT_CELL;
+            }
+        }
+
+        return board;
     }
 }

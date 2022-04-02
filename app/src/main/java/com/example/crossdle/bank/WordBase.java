@@ -10,7 +10,6 @@ public class WordBase {
 
     public static WordBase cached;
 
-    @SerializedName("")
     private WordList fourLetterWords;
     private WordList fiveLetterWords;
 
