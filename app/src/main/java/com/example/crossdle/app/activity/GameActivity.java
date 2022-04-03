@@ -132,6 +132,13 @@ public class GameActivity extends AppCompatActivity {
         DocumentReference historyRef = db.collection("history").document(user.getUid());
         Map<String, Object> count = new HashMap<>();
         count.put("board_count", FieldValue.increment(1));
+        if(20-attempts<20){
+            count.put("streak", FieldValue.increment(1));
+            count.put("wins", FieldValue.increment(1));
+        }else{
+            historyRef.update("streak", 0);
+        }
+
         historyRef.set(count, SetOptions.merge());
         Cell[][] charArr = board.getBoard();
         List<String> list = retrieveBoard();

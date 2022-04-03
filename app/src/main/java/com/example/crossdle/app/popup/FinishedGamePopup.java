@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.crossdle.R;
 import com.example.crossdle.app.activity.GameActivity;
+import com.example.crossdle.app.activity.HistoryActivity;
 import com.example.crossdle.app.activity.MainActivity;
 
 public class FinishedGamePopup extends AppCompatActivity {
@@ -49,6 +50,7 @@ public class FinishedGamePopup extends AppCompatActivity {
 
     public void onClickMenu(View view) {
         Intent intent = new Intent(this, MainActivity.class);
+        HistoryActivity.updateBoardCount();
         startActivity(intent);
     }
 }
