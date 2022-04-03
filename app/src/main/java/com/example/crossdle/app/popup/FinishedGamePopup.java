@@ -15,19 +15,18 @@ import com.example.crossdle.app.activity.HistoryActivity;
 import com.example.crossdle.app.activity.MainActivity;
 
 public class FinishedGamePopup extends AppCompatActivity {
+
+    private TextView timeView;
+    private TextView attemptsView;
+    private TextView titleView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finished_game);
-
-        Intent intent = getIntent();
-        String time = intent.getStringExtra("time_taken");
-        String attempts = intent.getStringExtra("attempts_taken");
-        TextView timeView = findViewById(R.id.finished_textView_time);
-        TextView attemptsView = findViewById(R.id.finished_textView_attempts);
-        timeView.setText(time);
-        attemptsView.setText(attempts);
-
+        timeView = findViewById(R.id.finished_textView_time);
+        attemptsView = findViewById(R.id.finished_textView_attempts);
+        titleView = findViewById(R.id.finished_textView_title);
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
@@ -41,6 +40,19 @@ public class FinishedGamePopup extends AppCompatActivity {
 
         Button buttonMenu = findViewById(R.id.finished_button_menu);
         buttonMenu.setOnClickListener(this::onClickMenu);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = getIntent();
+        String time = intent.getStringExtra("time_taken");
+        String attempts = intent.getStringExtra("attempts_taken");
+        String title = intent.getStringExtra("title");
+        timeView.setText(time);
+        attemptsView.setText(attempts);
+        titleView.setText(title);
+
     }
 
     public void onClickGame(View view) {

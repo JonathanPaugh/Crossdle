@@ -6,8 +6,11 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.crossdle.R;
 import com.example.crossdle.app.HistoryItem;
@@ -22,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -29,18 +33,41 @@ public class HistoryActivity extends FragmentActivity {
     private ViewPager2 viewPager;
     private static final ArrayList<HistoryItem> items = new ArrayList<>();
     private static int boardCount;
+    private static int winCount;
+    private static int streakCount;
+    private TextView gameView;
+    private TextView streakView;
+    private TextView winView;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        updateBoardCount();
         setContentView(R.layout.activity_history);
+        gameView = findViewById(R.id.history_textView_games);
+        streakView = findViewById(R.id.history_textView_streak);
+        winView = findViewById(R.id.history_textView_win);
         FragmentStateAdapter adapter = new HistoryPagerAdapter(this);
         viewPager = findViewById(R.id.history_viewPager);
         viewPager.setAdapter(adapter);
 
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        gameView.setText(String.valueOf(boardCount));
+        streakView.setText(String.valueOf(streakCount));
+        String winPercent = String.format("%.2f",winCount*100.0/(boardCount))+"%";
+        winView.setText(winPercent);
+        FragmentStateAdapter adapter = new HistoryPagerAdapter(this);
+        viewPager = findViewById(R.id.history_viewPager);
+        viewPager.setAdapter(adapter);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -67,7 +94,6 @@ public class HistoryActivity extends FragmentActivity {
             return boardCount;
         }
 
-        public void setBoardCount(int value) { boardCount = value; }
     }
 
         public static void getCompleteHistoryDataBase(){
@@ -76,6 +102,10 @@ public class HistoryActivity extends FragmentActivity {
             readBoardFromDataBase(String.valueOf(i));
         }
         }
+
+        public int getBoardCount() {return boardCount;}
+        public int getWinCount() {return winCount;}
+        public int getStreakCount() {return streakCount;}
 
         public static void readBoardFromDataBase(String id) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -104,6 +134,11 @@ public class HistoryActivity extends FragmentActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document != null && document.exists()) {
                         boardCount = Integer.parseInt(String.valueOf(document.get(("board_count"))));
+                        System.out.println("here1"+boardCount);
+                        streakCount = Integer.parseInt(String.valueOf(document.get(("streak"))));
+                        System.out.println("here2"+streakCount);
+                        winCount = Integer.parseInt(String.valueOf(document.get(("wins"))));
+                        System.out.println("here3"+winCount);
                     }
                 }
             });
