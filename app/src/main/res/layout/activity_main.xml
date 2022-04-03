@@ -5,7 +5,8 @@
     android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.activity.MainActivity">
+    tools:context=".app.activity.MainActivity"
+    android:background="@drawable/gradient_list">
 
     <ImageView
         android:id="@+id/imageView"
@@ -16,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.117"
-        app:srcCompat="@drawable/crossdle_logos" />
+        app:srcCompat="@drawable/crossdle_logos"/>
 
     <Button
         android:id="@+id/button_main_daily_crossdle"
@@ -26,7 +27,7 @@
         android:paddingHorizontal="30dp"
         android:text="@string/play_daily_crossdle"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -42,7 +43,7 @@
         android:paddingHorizontal="18dp"
         android:text="@string/play_random_crossdle"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -58,7 +59,7 @@
         android:paddingHorizontal="60dp"
         android:text="@string/history"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +74,7 @@
         android:paddingHorizontal="57dp"
         android:text="@string/settings"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"

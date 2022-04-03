@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GameActivity extends AppCompatActivity {
+    public static final String ARG_TYPE = "ARG_TYPE";
     private Board board;
     private BoardFragment boardFragment;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
