@@ -86,6 +86,7 @@ public class GameActivity extends AppCompatActivity {
             Intent intent = new Intent(this, FinishedGamePopup.class);
             intent.putExtra("time_taken",timeTaken);
             intent.putExtra("attempts_taken",String.valueOf(20-attempts));
+            intent.putExtra("title","Well Done!");
             startActivity(intent);
         }, (long)(duration * 0.7));
 
@@ -98,6 +99,9 @@ public class GameActivity extends AppCompatActivity {
 
         view.postDelayed(() -> {
             Intent intent = new Intent(this, FinishedGamePopup.class);
+            intent.putExtra("time_taken",timeTaken);
+            intent.putExtra("attempts_taken",String.valueOf(20-attempts));
+            intent.putExtra("title","Maybe Next Time!");
             startActivity(intent);
         }, (long)(duration * 0.7));
         writeBoardtoDatabase();
