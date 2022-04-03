@@ -1,43 +1,82 @@
 package com.example.crossdle.app;
 
-import androidx.fragment.app.FragmentActivity;
-
-import com.example.crossdle.game.Board;
-
 import java.io.Serializable;
-import java.time.LocalTime;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryItem implements Serializable {
-    private String gameId;
-    private int time;
-    private int words;
-    private int attempts;
-    private char[][] layout;
 
-    public HistoryItem(String gameId, int time, int words, int attempts, char[][] layout) {
+
+    private String gameId;
+    private String time;
+    private int letters;
+    private int attempts;
+    private List<String> layout;
+    private List<String> colourLayout;
+
+    public HistoryItem(String gameId, String time, int letters, int attempts, List<String> layout,
+    List<String> colourLayout) {
         this.gameId = gameId;
         this.time = time;
-        this.words = words;
+        this.letters = letters;
         this.attempts = attempts;
+        this.layout = layout;
+        this.colourLayout = colourLayout;
+    }
+
+    public HistoryItem(){}
+
+    public String getGameId() { return gameId; }
+    public String getTime() {
+        return time;
+    }
+    public int getLetters() {
+        return letters;
+    }
+    public int getAttempts() { return attempts; }
+    public List<String> getLayout() { return layout; }
+    public List<String> getColourLayout() { return colourLayout; }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setLetters(int letters) {
+        this.letters = letters;
+    }
+
+    public void setAttempts(int attempts) {
+        this.attempts = attempts;
+    }
+
+    public void setLayout(List<String> layout) {
         this.layout = layout;
     }
 
-    public String getGameId() { return gameId; }
-    public int getTime() {
-        return time;
-    }
-    public String getTimeString() {
-        return String.format("%d:%d",
-            TimeUnit.MILLISECONDS.toMinutes(time),
-            TimeUnit.MILLISECONDS.toSeconds(time) -
-            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))
-        );
+    public void setColourLayout(List<String> colourLayout) {
+        this.colourLayout = colourLayout;
     }
 
-    public int getWords() {
-        return words;
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
     }
-    public int getAttempts() { return attempts; }
-    public char[][] getLayout() { return layout; }
+
+    public char[][] toCharArr(List<String> strings) {
+        char[][] charArr = new char[6][6];
+        int count = 0;
+        String str = "";
+        for (int k = 0; k < strings.size(); k++) {
+            str+=strings.get(k);
+        }
+        char[] strToChar = str.toCharArray();
+        for (int i = 0; i < charArr.length; i++) {
+            for (int j = 0; j < charArr[0].length; j++) {
+                charArr[i][j] = strToChar[count];
+                count++;
+            }
+        }
+        return charArr;
+    }
+
+
 }

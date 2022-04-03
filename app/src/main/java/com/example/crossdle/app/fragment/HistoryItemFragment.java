@@ -47,10 +47,10 @@ public class HistoryItemFragment extends Fragment {
         TextView attemptsView = view.findViewById(R.id.historyItem_textView_attempts);
 
         idView.setText(item.getGameId());
-        timeView.setText(item.getTimeString());
-        wordsView.setText(String.valueOf(item.getWords()));
+        timeView.setText(item.getTime());
+        wordsView.setText(String.valueOf(item.getLetters()));
         attemptsView.setText(String.valueOf(item.getAttempts()));
-        setPreview(item.getLayout());
+        setPreview(item.toCharArr(item.getLayout()));
     }
 
     private void setPreview(char[][] layout) {
@@ -62,8 +62,14 @@ public class HistoryItemFragment extends Fragment {
 
     private Board createBoard(BoardView boardView, char[][] layout) {
         Board board = new Board(boardView, layout);
+        char[][] colourLayout = item.toCharArr(item.getColourLayout());
         board.setActive(false);
         board.forEach(cell -> cell.setValue(cell.getData()));
+        for (int i = 0; i<board.getBoard().length; i++){
+            for (int j = 0; j<board.getBoard()[0].length; j++){
+                board.getCell(j,i).setData(colourLayout[i][j]);
+            }
+        }
         return board;
     }
 

@@ -60,7 +60,7 @@ public class BoardFragment extends Fragment {
 
     public void onClickCell(View view) {
         Index index = findViewIdIndex(view.getId());
-        board.clickCell(index.x, index.y);
+        board.select(index.x, index.y);
     }
 
     public void setup(View view) {

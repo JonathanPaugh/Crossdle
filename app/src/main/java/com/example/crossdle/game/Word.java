@@ -1,6 +1,6 @@
 package com.example.crossdle.game;
 
-import com.example.crossdle.bank.WordDictionary;
+import android.view.View;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,8 +22,8 @@ public class Word implements Serializable
         this.orientation = orientation;
     }
 
-    public boolean isAttemptValid() {
-        return WordDictionary.cached.contains(toAttemptString());
+    public boolean isValid() {
+        return true;
     }
 
     public boolean isFilled() {
@@ -92,14 +92,6 @@ public class Word implements Serializable
         String string = "";
         for (Cell cell : getCells()) {
             string += cell.getData();
-        }
-        return string;
-    }
-
-    public String toAttemptString() {
-        String string = "";
-        for (Cell cell : getCells()) {
-            string += cell.getAttempt();
         }
         return string;
     }

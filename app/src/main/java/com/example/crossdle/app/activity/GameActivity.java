@@ -1,61 +1,67 @@
 package com.example.crossdle.app.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.media.MediaPlayer;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
+import com.example.crossdle.app.HistoryItem;
 import com.example.crossdle.app.fragment.BoardFragment;
 import com.example.crossdle.R;
 import com.example.crossdle.app.fragment.KeyboardFragment;
 import com.example.crossdle.app.popup.FinishedGamePopup;
-import com.example.crossdle.bank.WordBase;
 import com.example.crossdle.game.Board;
 import com.example.crossdle.game.BoardView;
-import com.example.crossdle.bank.WordDictionary;
-import com.example.crossdle.game.LayoutGenerator;
+import com.example.crossdle.game.Cell;
+import com.example.crossdle.game.RandomBoardGenerator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GameActivity extends AppCompatActivity {
-    public static final String ARG_TYPE = "ARG_TYPE";
-
     private Board board;
     private BoardFragment boardFragment;
-    private KeyboardFragment keyboardFragment;
-    private MediaPlayer mediaPlayer;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public static int attempts;
+    private static GameActivity thisActivity;
+    private long startTime;
+    private String timeTaken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        WordBase.load(this);
-        WordDictionary.load(this);
+        BoardView view = new BoardView();
 
-        Intent intent = getIntent();
-        boolean type = intent.getBooleanExtra(ARG_TYPE, false);
-
-        char[][] layout = null;
-        if (type) {
-            try {
-                layout = LayoutGenerator.returnBoard();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            layout = Board.TEST_LAYOUT;
+        try {
+            board = new Board(view, RandomBoardGenerator.returnBoard());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        BoardView view = new BoardView();
-        board = new Board(view, layout);
+        thisActivity = this;
+        attempts = 20;
 
-        keyboardFragment = KeyboardFragment.frame(getSupportFragmentManager(), R.id.game_fragmentView_keyboard, board);
+        KeyboardFragment keyboardFragment = KeyboardFragment.frame(getSupportFragmentManager(), R.id.game_fragmentView_keyboard, board);
         boardFragment = BoardFragment.frame(getSupportFragmentManager(), R.id.game_fragmentView_board, board);
 
         board.setOnWin(this::win);
@@ -63,38 +69,38 @@ public class GameActivity extends AppCompatActivity {
 
         view.setViewHandler(boardFragment::getView);
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.game_song);
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.game_song);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        mediaPlayer.stop();
-        mediaPlayer.release();
+        startTime = System.currentTimeMillis();
     }
 
     public void win() {
+        writeBoardtoDatabase();
         int duration = 2000;
 
         View view = boardFragment.getView();
         animateWin(view, duration);
 
         view.postDelayed(() -> {
-            startFinishedGame();
+            Intent intent = new Intent(this, FinishedGamePopup.class);
+            intent.putExtra("time_taken",timeTaken);
+            intent.putExtra("attempts_taken",String.valueOf(20-attempts));
+            startActivity(intent);
         }, (long)(duration * 0.7));
+
     }
 
     public void lose() {
-        System.out.println("You Lose!");
-        startFinishedGame();
-    }
+        int duration = 2000;
+        View view = boardFragment.getView();
+        animateLose(view, duration);
 
-    private void startFinishedGame() {
-        Intent intent = new Intent(this, FinishedGamePopup.class);
-        startActivity(intent);
+        view.postDelayed(() -> {
+            Intent intent = new Intent(this, FinishedGamePopup.class);
+            startActivity(intent);
+        }, (long)(duration * 0.7));
+        writeBoardtoDatabase();
     }
 
     private void animateWin(View view, int duration) {
@@ -102,6 +108,72 @@ public class GameActivity extends AppCompatActivity {
         animation.setDuration(duration);
         view.startAnimation(animation);
     }
+
+    private void animateLose(View view, int duration) {
+        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.mixed_anim);
+        animation.setDuration(duration);
+        view.startAnimation(animation);
+    }
+    private List<String> retrieveBoard(){
+        Cell[][] playerBoard = board.getBoard();
+        char[][] playerGuesses = new char[playerBoard.length][playerBoard[0].length];
+        for (int y = 0; y < playerBoard.length; y++) {
+            System.out.println();
+            for (int x = 0; x < playerBoard[y].length; x++) {
+                playerGuesses[y][x] = playerBoard[y][x].getData();
+            }
+        }
+        return Board.charToList(playerGuesses);
+    }
+
+    public void writeBoardtoDatabase() {
+        long gameLength = System.currentTimeMillis() - startTime;
+        timeTaken = String.valueOf(gameLength/1000.0);
+        DocumentReference historyRef = db.collection("history").document(user.getUid());
+        Map<String, Object> count = new HashMap<>();
+        count.put("board_count", FieldValue.increment(1));
+        historyRef.set(count, SetOptions.merge());
+        Cell[][] charArr = board.getBoard();
+        List<String> list = retrieveBoard();
+        int correctLetters = correctLetters(list,Board.cellToList(charArr));
+        historyRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    String boardCount = (String.valueOf(document.get(("board_count"))));
+                    HistoryItem history = new HistoryItem(boardCount, timeTaken, correctLetters, 20-attempts, list, Board.cellToList(charArr));
+                    historyRef.collection(boardCount)
+                            .document(boardCount)
+                            .set(history)
+                            .addOnSuccessListener(aVoid -> Log.d("W", "DocumentSnapshot successfully written!"))
+                            .addOnFailureListener(e -> Log.w("W", "Error writing document", e));
+                } else {
+                    Log.d("W", "No such document");
+                }
+
+            } else {
+                Log.d("W", "get failed with ", task.getException());
+            }
+        });
+    }
+
+    public static void updateAttempts(){
+        attempts -= 1;
+        System.out.println(attempts);
+        TextView remainingView = thisActivity.findViewById(R.id.game_textView_remaining);
+        remainingView.setText(String.valueOf(attempts));
+    }
+
+    public static int correctLetters(List<String> list1, List<String> list2){
+        int count = 0;
+       for(int i = 0;i<list1.size();i++){
+           if(list1.get(i).equals(list2.get(i))){
+               count+=1;
+           }
+       }
+        return count;
+    }
+
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -121,4 +193,5 @@ public class GameActivity extends AppCompatActivity {
 
         return super.dispatchKeyEvent(event);
     }
+
 }
