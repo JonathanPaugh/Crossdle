@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
+/***
+ * Handles the generation of board layouts by picking random words from a word bank and
+ * trying to fit them until a layout until it works.
+ */
 public class LayoutGenerator {
     public static char[][] layout;
 

@@ -8,6 +8,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+/***
+ * Handles opening raw resources and has a helper function for opening
+ * and converting a raw json resource to a new instance of a gson compatible class.
+ */
 public class FileHandler {
     public static InputStream openRawResource(Context context, String fileName) {
         int resourceId = context.getResources().getIdentifier(fileName,

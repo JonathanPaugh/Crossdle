@@ -2,6 +2,11 @@ package com.example.crossdle.game;
 
 import java.io.Serializable;
 
+/***
+ * Represents a selection in the game state. A selection can be targeting nothing (null) or a
+ * word. If it is targeting a word a current cell value is stored from that word representing the
+ * current letter position of the selection.
+ */
 public class Selection implements Serializable
 {
     private Word word;
