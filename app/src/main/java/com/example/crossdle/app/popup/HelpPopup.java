@@ -1,7 +1,5 @@
 package com.example.crossdle.app.popup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -10,6 +8,9 @@ import android.widget.Button;
 
 import com.example.crossdle.R;
 
+/**
+ * This class contains methods/variables that support the help/information popup.
+ */
 public class HelpPopup extends Activity implements View.OnClickListener {
 
     @Override

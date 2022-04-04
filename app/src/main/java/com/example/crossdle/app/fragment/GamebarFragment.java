@@ -12,10 +12,14 @@ import androidx.fragment.app.Fragment;
 import com.example.crossdle.R;
 import com.example.crossdle.app.activity.MainActivity;
 import com.example.crossdle.app.popup.HelpPopup;
-
+/**
+ * This is a Fragment that holds that will holds/represents the Gamebar of the Game Activity.
+ */
 public class GamebarFragment extends Fragment {
     public GamebarFragment() {}
+    //An ImageView that is a reference to the info image.
     ImageView infoImage;
+    //An ImageView that is a reference to the back-button image.
     ImageView backButtonImage;
 
     public static GamebarFragment newInstance() {
