@@ -2,9 +2,11 @@ package com.example.crossdle.app.activity;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -26,9 +28,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button settings;
 
     private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer2;
 
     private boolean settingsOpen = false;
     private boolean stopMusic = true;
+
+    String themeData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +44,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         settings = findViewById(R.id.button_main_settings);
 
         buttons = new Button[] {
-            findViewById(R.id.button_main_daily_crossdle),
-            findViewById(R.id.button_main_random_crossdle),
-            findViewById(R.id.button_main_history),
-            settings
+                findViewById(R.id.button_main_daily_crossdle),
+                findViewById(R.id.button_main_random_crossdle),
+                findViewById(R.id.button_main_history),
+                settings
         };
 
         for (Button button: buttons) {
@@ -50,6 +55,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         settings.setOnClickListener(this::onOpenSettings);
+
+        Intent intent = getIntent();
+        themeData = intent.getStringExtra("theme");
+        if(themeData != null){
+            switch (themeData){
+                case "Strawberry":
+                    getApplication().setTheme(R.style.theme_strawberry);
+                    System.out.println("hello");
+                case "Emerald Forest":
+                    getApplication().setTheme(R.style.theme_strawberry);
+                case "Ocean":
+                    getApplication().setTheme(R.style.theme_strawberry);
+            }
+        }
+
+        ConstraintLayout constraintLayout = findViewById(R.id.layout_main);
+        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(2500);
+        animationDrawable.setExitFadeDuration(5000);
+        animationDrawable.start();
     }
 
     @Override
@@ -124,11 +149,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int timeout = 1500;
         animSlideOut(findViewById(R.id.layout_main));
         view.postDelayed(() -> changeActivity(view), timeout);
+        mediaPlayer2 = MediaPlayer.create(this, R.raw.button_sound_effect);
+        mediaPlayer2.start();
     }
 
     public void onOpenSettings(View view) {
         settingsOpen = true;
         Intent intent = new Intent(this, SettingsPopup.class);
+        mediaPlayer2 = MediaPlayer.create(this, R.raw.button_sound_effect);
+        mediaPlayer2.start();
         startActivity(intent);
     }
 
