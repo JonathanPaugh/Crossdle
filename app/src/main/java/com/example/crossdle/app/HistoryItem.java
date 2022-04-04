@@ -14,8 +14,8 @@ public class HistoryItem implements Serializable {
     private List<String> layout;
     private List<String> colourLayout;
 
-    public HistoryItem(String gameId, String time, int letters, int attempts, List<String> layout,
-    List<String> colourLayout) {
+    public HistoryItem(String gameId, String time, int letters, int attempts,
+                       List<String> layout, List<String> colourLayout) {
         this.gameId = gameId;
         this.time = time;
         this.letters = letters;
@@ -27,7 +27,6 @@ public class HistoryItem implements Serializable {
     public HistoryItem() {}
 
     public String getGameId() { return gameId; }
-    public int getGameIdAsInt() { return Integer.valueOf(gameId); }
     public String getTime() {
         return time;
     }

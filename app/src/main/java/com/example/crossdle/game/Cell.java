@@ -93,7 +93,6 @@ public class Cell implements Serializable
         }
     }
 
-    public void setData(char data) { this.data = data; }
     public void setValue(char value) {
         this.value = value;
     }

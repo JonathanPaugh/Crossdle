@@ -183,18 +183,6 @@ public class GameActivity extends AppCompatActivity {
         return super.dispatchKeyEvent(event);
     }
 
-    private List<String> retrieveBoard(){
-        Cell[][] playerBoard = board.getData();
-        char[][] playerGuesses = new char[playerBoard.length][playerBoard[0].length];
-        for (int y = 0; y < playerBoard.length; y++) {
-            System.out.println();
-            for (int x = 0; x < playerBoard[y].length; x++) {
-                playerGuesses[y][x] = playerBoard[y][x].getData();
-            }
-        }
-        return Board.charToList(playerGuesses);
-    }
-
     public void writeBoardToDatabase() {
         long gameLength = System.currentTimeMillis() - startTime;
         timeTaken = String.valueOf(gameLength/1000.0);
@@ -209,15 +197,14 @@ public class GameActivity extends AppCompatActivity {
         }
 
         historyRef.set(count, SetOptions.merge());
-        Cell[][] charArr = board.getData();
-        List<String> list = retrieveBoard();
-        int correctLetters = correctLetters(list,Board.cellToList(charArr));
+        List<String> list = board.toDatabaseLayout();
+        int correctLetters = correctLetters(list, board.toDatabaseValues());
         historyRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document != null && document.exists()) {
                     String boardCount = (String.valueOf(document.get(("board_count"))));
-                    HistoryItem history = new HistoryItem(boardCount, timeTaken, correctLetters, board.getAttemptsTaken(), list, Board.cellToList(charArr));
+                    HistoryItem history = new HistoryItem(boardCount, timeTaken, correctLetters, board.getAttemptsTaken(), list, board.toDatabaseValues());
                     historyRef.collection("games")
                             .document(boardCount)
                             .set(history)

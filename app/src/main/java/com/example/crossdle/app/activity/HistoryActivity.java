@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
@@ -28,12 +29,12 @@ import java.util.Comparator;
 
 
 public class HistoryActivity extends FragmentActivity {
+    private final ArrayList<HistoryItem> items = new ArrayList();
+
     private TextView gameView;
     private TextView streakView;
     private TextView winView;
     private ViewPager2 viewPager;
-
-    private final ArrayList<HistoryItem> items = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,6 @@ public class HistoryActivity extends FragmentActivity {
         });
     }
 
-
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() <= 0) {
@@ -70,10 +70,11 @@ public class HistoryActivity extends FragmentActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DocumentReference docRef = db.collection("history").document(user.getUid());
 
-        docRef.collection("games").get().addOnCompleteListener(task -> {
+        docRef.collection("games")
+              .orderBy("gameId", Query.Direction.DESCENDING)
+              .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d("W", document.getId() + " => " + document.getData());
                     HistoryItem history = document.toObject(HistoryItem.class);
                     items.add(history);
                 }
