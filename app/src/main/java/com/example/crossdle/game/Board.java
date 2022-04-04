@@ -66,6 +66,10 @@ public class Board implements Serializable
         return data[y][x];
     }
 
+    public int getAttempts() {
+        return attempts;
+    }
+
     public Selection getSelection() { return selection; }
 
     public void setActive(boolean active) {

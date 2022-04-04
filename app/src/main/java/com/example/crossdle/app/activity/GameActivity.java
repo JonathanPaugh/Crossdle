@@ -125,7 +125,7 @@ public class GameActivity extends AppCompatActivity {
     private void startFinishedGame(String title) {
         Intent intent = new Intent(this, FinishedGamePopup.class);
         intent.putExtra("time_taken", timeTaken);
-        intent.putExtra("attempts_taken", String.valueOf(attemptsRemaining)); // TODO FIX
+        intent.putExtra("attempts_taken", String.valueOf(board.getAttempts())); // TODO FIX
         intent.putExtra("title", title);
         startActivity(intent);
     }
@@ -179,7 +179,7 @@ public class GameActivity extends AppCompatActivity {
         DocumentReference historyRef = db.collection("history").document(user.getUid());
         Map<String, Object> count = new HashMap<>();
         count.put("board_count", FieldValue.increment(1));
-        if(attempts > 0){
+        if(board.getAttempts() > 0){
             count.put("streak", FieldValue.increment(1));
             count.put("wins", FieldValue.increment(1));
         }else{
@@ -195,7 +195,7 @@ public class GameActivity extends AppCompatActivity {
                 DocumentSnapshot document = task.getResult();
                 if (document != null && document.exists()) {
                     String boardCount = (String.valueOf(document.get(("board_count"))));
-                    HistoryItem history = new HistoryItem(boardCount, timeTaken, correctLetters, attemptsRemaning, list, Board.cellToList(charArr));
+                    HistoryItem history = new HistoryItem(boardCount, timeTaken, correctLetters, board.getAttempts(), list, Board.cellToList(charArr));
                     historyRef.collection(boardCount)
                             .document(boardCount)
                             .set(history)
