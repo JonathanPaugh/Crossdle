@@ -45,7 +45,7 @@ public class Cell implements Serializable
 
     private final int x;
     private final int y;
-    private final char data;
+    private char data;
 
     private char value;
     private char attempt;
@@ -93,6 +93,7 @@ public class Cell implements Serializable
         }
     }
 
+    public void setData(char data) { this.data = data; }
     public void setValue(char value) {
         this.value = value;
     }
