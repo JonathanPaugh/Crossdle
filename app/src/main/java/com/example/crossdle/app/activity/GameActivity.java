@@ -22,8 +22,8 @@ import com.example.crossdle.bank.WordBase;
 import com.example.crossdle.game.Board;
 import com.example.crossdle.game.BoardView;
 import com.example.crossdle.bank.WordDictionary;
-import com.example.crossdle.game.Cell;
 import com.example.crossdle.game.LayoutGenerator;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -39,6 +39,10 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class GameActivity extends AppCompatActivity {
+    // GameActivity is the activity where the game is played from.
+    // It contains functions relating to game logic and the board.
+
+    //Stores information regarding whether this is a daily or random puzzle.
     public static final String ARG_TYPE = "ARG_TYPE";
 
     private Board board;
@@ -48,6 +52,7 @@ public class GameActivity extends AppCompatActivity {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
     private long startTime;
     private String timeTaken;
 
@@ -82,6 +87,7 @@ public class GameActivity extends AppCompatActivity {
         Intent intent = getIntent();
         boolean type = intent.getBooleanExtra(ARG_TYPE, false);
 
+        //Sets the board given the game mode.
         if (type) {
             TextView titleView = findViewById(R.id.game_textView_title);
             titleView.setText(getResources().getString(R.string.game_random_title));
@@ -102,6 +108,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void createBoard(char[][] layout) {
+        // Initializes a Board.
         BoardView view = new BoardView();
         board = new Board(view, layout);
 
@@ -117,53 +124,52 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        //Stops the music on pause.
         super.onPause();
-
         mediaPlayer.stop();
         mediaPlayer.release();
     }
 
     public void win() {
+        //Handles the functions after the user wins.
         writeBoardToDatabase();
-
         int duration = 2000;
-
         View view = boardFragment.getView();
         animateWin(view, duration);
-
         view.postDelayed(() -> {
             startFinishedGame("You Win!");
         }, (long)(duration * 0.7));
     }
 
     public void lose() {
+        //Handles the functions after the user loses.
         writeBoardToDatabase();
-
         int duration = 2000;
-
         View view = boardFragment.getView();
         animateLose(view, duration);
 
-        view.postDelayed(() -> {
-            startFinishedGame("Game Over!");
-        }, (long)(duration * 0.7));
+        view.postDelayed(() -> startFinishedGame("Game Over!"), (long)(duration * 0.7));
     }
 
     private void startFinishedGame(String title) {
+        //Upon game completion load pop-up.
         Intent intent = new Intent(this, FinishedGamePopup.class);
         intent.putExtra("time_taken", timeTaken);
         intent.putExtra("attempts_taken", String.valueOf(board.getAttemptsTaken()));
         intent.putExtra("title", title);
+        intent.putExtra("board", title);
         startActivity(intent);
     }
 
     private void animateWin(View view, int duration) {
+        //Animations upon winning
         Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.mixed_anim);
         animation.setDuration(duration);
         view.startAnimation(animation);
     }
 
     private void animateLose(View view, int duration) {
+        //Animations upon losing
         Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.mixed_anim);
         animation.setDuration(duration);
         view.startAnimation(animation);
@@ -171,6 +177,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        //Keyboard functionality for android emulators.
          if (event.getAction() == KeyEvent.ACTION_DOWN) {
             if (event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
                 board.clickBack();
@@ -184,11 +191,11 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         }
-
         return super.dispatchKeyEvent(event);
     }
 
     public void writeBoardToDatabase() {
+        //Writes a history item object into Firestore.
         long gameLength = System.currentTimeMillis() - startTime;
         timeTaken = String.valueOf(gameLength/1000.0);
         DocumentReference historyRef = db.collection("history").document(user.getUid());
@@ -226,6 +233,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public static int correctLetters(List<String> list1, List<String> list2){
+        //Returns the count of how many correct letters were guessed.
         int count = 0;
         for(int i = 0;i<list1.size();i++){
             if(list1.get(i).equals(list2.get(i))){
@@ -236,6 +244,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public static void getDailyBoard(Consumer<char[][]> onComplete){
+        //Loads a daily board from Firestore that is changed every 24 hours.
         long secondsNow = System.currentTimeMillis()/1000L;
         long secondsInADay= 86400L;
 

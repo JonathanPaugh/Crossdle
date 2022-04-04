@@ -32,7 +32,7 @@
                 android:id="@+id/history_textView_games"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2"
+                android:text="@string/history_placeholder_number"
                 android:textAlignment="center"
                 android:textSize="36sp" />
         </LinearLayout>
@@ -55,7 +55,7 @@
                 android:id="@+id/history_textView_streak"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2"
+                android:text="@string/history_placeholder_number"
                 android:textAlignment="center"
                 android:textColor="@color/primary"
                 android:textSize="36sp" />
@@ -79,7 +79,7 @@
                 android:id="@+id/history_textView_win"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="100%"
+                android:text="@string/history_placeholder_percent"
                 android:textAlignment="center"
                 android:textColor="@android:color/holo_green_light"
                 android:textSize="36sp" />

@@ -18,9 +18,9 @@ import com.example.crossdle.R;
 import com.example.crossdle.app.popup.SettingsPopup;
 
 
-//https://firebase.google.com/docs/auth/android/password-auth?authuser=0
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    //The main menu Activity.
+    //Contains the functions necessary to access other activities or features.
 
     private Button[] buttons;
 
@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MediaPlayer mediaPlayer2;
 
     private boolean settingsOpen = false;
-    private boolean stopMusic = true;
 
     String themeData;
 
@@ -62,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onResume() {
+        //Starts animations and music when the app resumes.
         super.onResume();
 
         View layoutView = findViewById(R.id.layout_main);
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onPause() {
+        //Stops te music on pause.
         super.onPause();
 
         if (!settingsOpen) {
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //Sets the theme given a user choice.
         if (resultCode == SettingsPopup.RESULT_OK) {
             themeData = data.getStringExtra("theme");
             ConstraintLayout constraintLayout = findViewById(R.id.layout_main);
@@ -126,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void animSlideIn(View view) {
+        //Sliding animations for menu buttons.
         int interval = 250;
         int duration = 1000;
 
@@ -141,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void animSlideOut(View view) {
+        //Sliding animations for menu buttons.
         int interval = 250;
         int duration = 1000;
 
@@ -157,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        //Animations and sound effects for on click events.
         int timeout = 1500;
         animSlideOut(findViewById(R.id.layout_main));
         view.postDelayed(() -> changeActivity(view), timeout);
@@ -166,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onOpenSettings(View view) {
+        //Opens the settings pop-up.
         settingsOpen = true;
         Intent intent = new Intent(this, SettingsPopup.class);
         mediaPlayer2 = MediaPlayer.create(this, R.raw.button_sound_effect);
@@ -174,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void changeActivity(View view) {
+        //Starts other activities given user input.
         if (view.getId() == R.id.button_main_daily_crossdle)  {
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("theme", themeData);

@@ -2,6 +2,9 @@ package com.example.crossdle.app.popup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -13,6 +16,7 @@ import com.example.crossdle.R;
 import com.example.crossdle.app.activity.GameActivity;
 import com.example.crossdle.app.activity.HistoryActivity;
 import com.example.crossdle.app.activity.MainActivity;
+import com.example.crossdle.game.Board;
 
 public class FinishedGamePopup extends AppCompatActivity {
 
@@ -52,7 +56,6 @@ public class FinishedGamePopup extends AppCompatActivity {
         timeView.setText(time);
         attemptsView.setText(attempts);
         titleView.setText(title);
-
     }
 
     public void onClickGame(View view) {
@@ -65,4 +68,5 @@ public class FinishedGamePopup extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
 }

@@ -1,6 +1,6 @@
 package com.example.crossdle.app.activity;
 
-
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -14,7 +14,6 @@ import com.example.crossdle.R;
 import com.example.crossdle.app.HistoryItem;
 import com.example.crossdle.app.fragment.HistoryItemFragment;
 
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,13 +22,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-
 import java.util.ArrayList;
-import java.util.Comparator;
+
 
 
 public class HistoryActivity extends FragmentActivity {
-    private final ArrayList<HistoryItem> items = new ArrayList();
+    // HistoryActivity is the activity where the players history is displayed.
+    // It contains functions that manages HistoryItem objects.
+    private final ArrayList<HistoryItem> items = new ArrayList<>();
 
     private TextView gameView;
     private TextView streakView;
@@ -48,6 +48,7 @@ public class HistoryActivity extends FragmentActivity {
 
     @Override
     protected void onStart() {
+        //Renews the history every time its visited.
         super.onStart();
         readStats();
         readHistory(() -> {
@@ -66,6 +67,7 @@ public class HistoryActivity extends FragmentActivity {
     }
 
     public void readHistory(Runnable onComplete) {
+        //Reads HistoryItem objects from Firestore.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DocumentReference docRef = db.collection("history").document(user.getUid());
@@ -87,6 +89,7 @@ public class HistoryActivity extends FragmentActivity {
 
 
     public void readStats() {
+        //Reads players statistics from FireStore.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DocumentReference historyRef = db.collection("history").document(user.getUid());
@@ -108,11 +111,13 @@ public class HistoryActivity extends FragmentActivity {
     }
 
     private class HistoryPagerAdapter extends FragmentStateAdapter {
+        //A View Pager where History is displayed.
 
         public HistoryPagerAdapter(FragmentActivity activity) {
             super(activity);
         }
 
+        @NonNull
         @Override
         public Fragment createFragment(int position) {
             return HistoryItemFragment.newInstance(items.get(position));

@@ -23,6 +23,8 @@
     <string name="history_heading_games">Games</string>
     <string name="history_heading_streak">Streak</string>
     <string name="history_heading_wins">Win %</string>
+    <string name="history_placeholder_number">2</string>
+    <string name="history_placeholder_percent">100%</string>
 
     <!-- History Item -->
 
@@ -66,8 +68,8 @@
 
     <!-- Menu -->
 
-    <string name="play_daily_crossdle">Daily Crossdle</string>
-    <string name="play_random_crossdle">Random Crossdle</string>
+    <string name="play_daily_crossdle">Daily</string>
+    <string name="play_random_crossdle">Random</string>
     <string name="history">History</string>
     <string name="settings">Settings</string>
 
@@ -86,5 +88,7 @@
         the word but in a different spot will be yellow, and letters not in the word will be gray.
     </string>
     <string name="help_title">How To Play:</string>
+    <string name="help_understood_button">Understood</string>
+
 
 </resources>
