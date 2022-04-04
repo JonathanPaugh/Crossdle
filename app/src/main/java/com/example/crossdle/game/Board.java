@@ -1,7 +1,9 @@
 package com.example.crossdle.game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
 
@@ -275,5 +277,34 @@ public class Board implements Serializable
         }
 
         return board;
+    }
+
+    public static List<String> charToList(char[][] data) {
+        List<String> list = new ArrayList<>();
+        for (int y = 0; y < data.length; y++) {
+            for (int x = 0; x < data[y].length; x++) {
+                list.add(Character.toString(data[y][x]));
+            }
+        }
+        return list;
+    }
+    public static List<String> cellToList(Cell[][] data) {
+        List<String> list = new ArrayList<>();
+        for (int y = 0; y < data.length; y++) {
+            for (int x = 0; x < data[y].length; x++) {
+                list.add(Character.toString(data[y][x].getValue()));
+            }
+        }
+        return list;
+    }
+    public static List<String> getTestBoardList(){
+        List<String> list = new ArrayList<>();
+        list.add(" ");list.add(" ");list.add(" ");list.add(" ");list.add(" ");list.add(" ");
+        list.add("C");list.add("A");list.add("S");list.add("H");list.add(" ");list.add(" ");
+        list.add("O");list.add(" ");list.add(" ");list.add(" ");list.add(" ");list.add(" ");
+        list.add("N");list.add("O");list.add("M");list.add("A");list.add("D");list.add(" ");
+        list.add("D");list.add(" ");list.add(" ");list.add(" ");list.add(" ");list.add(" ");
+        list.add("O");list.add("N");list.add("L");list.add("Y");list.add(" ");list.add(" ");
+        return list;
     }
 }
