@@ -27,6 +27,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class HistoryActivity extends FragmentActivity {
@@ -52,6 +54,7 @@ public class HistoryActivity extends FragmentActivity {
         FragmentStateAdapter adapter = new HistoryPagerAdapter(this);
         viewPager = findViewById(R.id.history_viewPager);
         viewPager.setAdapter(adapter);
+
 
     }
 
@@ -86,6 +89,8 @@ public class HistoryActivity extends FragmentActivity {
 
         @Override
         public Fragment createFragment(int position) {
+            System.out.println("position"+position);
+            System.out.println("positionitem"+items.get(position));
             return HistoryItemFragment.newInstance(items.get(position));
         }
 
@@ -97,10 +102,13 @@ public class HistoryActivity extends FragmentActivity {
     }
 
         public static void getCompleteHistoryDataBase(){
-        for(int i = 1; i<=boardCount; i++){
-            System.out.println("i"+i);
-            readBoardFromDataBase(String.valueOf(i));
-        }
+
+            for (int i = 1; i <= boardCount; i++) {
+                System.out.println("i" + i);
+                readBoardFromDataBase(String.valueOf(i));
+            }
+            items.sort(Comparator.comparing(HistoryItem::getGameIdAsInt));
+
         }
 
         public int getBoardCount() {return boardCount;}
@@ -110,6 +118,7 @@ public class HistoryActivity extends FragmentActivity {
         public static void readBoardFromDataBase(String id) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            System.out.println("id"+user.getUid());
             DocumentReference docRef = db.collection("history").document(user.getUid());
             docRef.collection(id).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -125,23 +134,23 @@ public class HistoryActivity extends FragmentActivity {
         }
 
 
-        public static void updateBoardCount(){
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            DocumentReference historyRef = db.collection("history").document(user.getUid());
-            historyRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null && document.exists()) {
-                        boardCount = Integer.parseInt(String.valueOf(document.get(("board_count"))));
-                        System.out.println("here1"+boardCount);
-                        streakCount = Integer.parseInt(String.valueOf(document.get(("streak"))));
-                        System.out.println("here2"+streakCount);
-                        winCount = Integer.parseInt(String.valueOf(document.get(("wins"))));
-                        System.out.println("here3"+winCount);
+        public static void updateBoardCount() {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                DocumentReference historyRef = db.collection("history").document(user.getUid());
+                historyRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null && document.exists()) {
+                            boardCount = Integer.parseInt(String.valueOf(document.get(("board_count"))));
+                            System.out.println("here1" + boardCount);
+                            streakCount = Integer.parseInt(String.valueOf(document.get(("streak"))));
+                            System.out.println("here2" + streakCount);
+                            winCount = Integer.parseInt(String.valueOf(document.get(("wins"))));
+                            System.out.println("here3" + winCount);
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
     }
 

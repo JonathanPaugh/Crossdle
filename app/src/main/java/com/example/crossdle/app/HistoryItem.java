@@ -27,6 +27,7 @@ public class HistoryItem implements Serializable {
     public HistoryItem(){}
 
     public String getGameId() { return gameId; }
+    public int getGameIdAsInt() { return Integer.valueOf(gameId); }
     public String getTime() {
         return time;
     }

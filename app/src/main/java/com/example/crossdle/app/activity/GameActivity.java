@@ -18,6 +18,7 @@ import com.example.crossdle.app.fragment.BoardFragment;
 import com.example.crossdle.R;
 import com.example.crossdle.app.fragment.KeyboardFragment;
 import com.example.crossdle.app.popup.FinishedGamePopup;
+import com.example.crossdle.app.popup.SettingsPopup;
 import com.example.crossdle.game.Board;
 import com.example.crossdle.game.BoardView;
 import com.example.crossdle.game.Cell;
@@ -205,5 +206,7 @@ public class GameActivity extends AppCompatActivity {
 
         return super.dispatchKeyEvent(event);
     }
+
+
 
 }
