@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class GameActivity extends AppCompatActivity {
     public static final String ARG_TYPE = "ARG_TYPE";
@@ -49,7 +50,6 @@ public class GameActivity extends AppCompatActivity {
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private long startTime;
     private String timeTaken;
-    private static char[][] dailyBoard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +62,8 @@ public class GameActivity extends AppCompatActivity {
         String themeData = intent2.getStringExtra("theme");
         LinearLayout linearLayout = findViewById(R.id.linear_layout_game);
 
-        if(themeData != null){
-            switch (themeData){
+        if (themeData != null) {
+            switch (themeData) {
                 case "Ocean":
                     linearLayout.setBackgroundResource(R.drawable.gradient_list_ocean);
                     break;
@@ -82,19 +82,26 @@ public class GameActivity extends AppCompatActivity {
         Intent intent = getIntent();
         boolean type = intent.getBooleanExtra(ARG_TYPE, false);
 
-        char[][] layout = null;
         if (type) {
             TextView titleView = findViewById(R.id.game_textView_title);
             titleView.setText(getResources().getString(R.string.game_random_title));
             try {
-                layout = LayoutGenerator.returnBoard();
+                createBoard(LayoutGenerator.returnBoard());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            layout = dailyBoard;
+            GameActivity.getDailyBoard(this::createBoard);
         }
 
+        startTime = System.currentTimeMillis();
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.game_song);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+    }
+
+    private void createBoard(char[][] layout) {
         BoardView view = new BoardView();
         board = new Board(view, layout);
 
@@ -106,12 +113,6 @@ public class GameActivity extends AppCompatActivity {
 
         view.setViewHandler(boardFragment::getView);
         view.setViewKeyboardHandler(keyboardFragment::getView);
-
-        startTime = System.currentTimeMillis();
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.game_song);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
     }
 
     @Override
@@ -234,7 +235,7 @@ public class GameActivity extends AppCompatActivity {
         return count;
     }
 
-    public static void getDailyBoard(){
+    public static void getDailyBoard(Consumer<char[][]> onComplete){
         long secondsNow = System.currentTimeMillis()/1000L;
         long secondsInADay= 86400L;
 
@@ -264,7 +265,7 @@ public class GameActivity extends AppCompatActivity {
                                 if (document1.exists()) {
                                     Log.d("W", "DocumentSnapshot data: " + document1.getData());
                                     List<String> list = (List<String>) document1.getData().get("daily");
-                                    dailyBoard =  Board.listToChar(list);
+                                    onComplete.accept(Board.listToChar(list));
                                 } else {
                                     Log.d("W", "No such document");
                                 }
