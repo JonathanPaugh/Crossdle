@@ -26,10 +26,17 @@ public class Word implements Serializable
         this.orientation = orientation;
     }
 
+    /**
+     * Checks if all the attempt letters of cells in this word form a valid word
+     * in the dictionary.
+     */
     public boolean isAttemptValid() {
         return WordDictionary.cached.contains(toAttemptString());
     }
 
+    /**
+     * Checks if all the cells have an attempt letter assigned.
+     */
     public boolean isFilled() {
         for (Cell cell : getCells()) {
             if (!cell.isAttempted()) {
@@ -44,6 +51,9 @@ public class Word implements Serializable
         return getCells().length;
     }
 
+    /**
+     * Gets the head of the word.
+     */
     public Cell getStart() {
         return start;
     }
@@ -52,6 +62,9 @@ public class Word implements Serializable
         return orientation;
     }
 
+    /**
+     * Gets all the cells that make up the word.
+     */
     public Cell[] getCells() {
         Cell cell = start;
         List<Cell> cells = new ArrayList();
@@ -69,6 +82,9 @@ public class Word implements Serializable
         return cellArray;
     }
 
+    /**
+     * Checks if the word contains a cell.
+     */
     public boolean containsCell(Cell cell) {
         boolean found = false;
         for (Cell wordCell : getCells()) {
@@ -80,6 +96,9 @@ public class Word implements Serializable
         return found;
     }
 
+    /***
+     * Checks if the word contains an incorrect cell with given character data.
+     */
     public boolean containsIncorrect(char character) {
         boolean found = false;
         for (Cell cell : getCells()) {
@@ -100,6 +119,9 @@ public class Word implements Serializable
         return string;
     }
 
+    /**
+     * Returns a string of joined cell attempts.
+     */
     public String toAttemptString() {
         String string = "";
         for (Cell cell : getCells()) {
