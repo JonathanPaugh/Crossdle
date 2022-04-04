@@ -27,6 +27,7 @@ public class BoardView implements Serializable {
 
     public void drawBoard(Cell[][] cells) {
         View view = viewHandler.get();
+        if (view == null) { return; }
         for (int y = 0; y < LAYOUT.length; y++) {
             for (int x = 0; x < LAYOUT[y].length; x++) {
                 Cell cell = cells[y][x];
@@ -37,17 +38,20 @@ public class BoardView implements Serializable {
 
     public void updateAttempts(int attempts) {
         View view = viewHandler.get();
+        if (view == null) { return; }
         TextView viewAttempts = view.findViewById(R.id.board_textView_attempts);
         viewAttempts.setText(String.valueOf(attempts));
     }
 
     public void animateCellAttempt(Cell cell) {
         View view = viewHandler.get();
+        if (view == null) { return; }
         cell.animateAttempt(view.findViewById(LAYOUT[cell.getY()][cell.getX()]));
     }
 
     public void animateCellInvalid(Cell cell) {
         View view = viewHandler.get();
+        if (view == null) { return; }
         cell.animateInvalid(view.findViewById(LAYOUT[cell.getY()][cell.getX()]));
     }
 }
