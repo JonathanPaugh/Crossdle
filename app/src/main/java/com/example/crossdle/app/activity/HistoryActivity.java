@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class HistoryActivity extends FragmentActivity {
@@ -73,6 +74,55 @@ public class HistoryActivity extends FragmentActivity {
         }
     }
 
+    public static void getCompleteHistoryDataBase(){
+        for (int i = 1; i <= boardCount; i++) {
+            System.out.println("i" + i);
+            readBoardFromDataBase(String.valueOf(i));
+        }
+        items.sort(Comparator.comparing(HistoryItem::getGameIdAsInt));
+    }
+
+    public int getBoardCount() {return boardCount;}
+    public int getWinCount() {return winCount;}
+    public int getStreakCount() {return streakCount;}
+
+    public static void readBoardFromDataBase(String id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DocumentReference docRef = db.collection("history").document(user.getUid());
+        docRef.collection(id).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Log.d("W", document.getId() + " => " + document.getData());
+                    HistoryItem history = document.toObject(HistoryItem.class);
+                    items.add(history);
+                }
+            } else {
+                Log.d("W", "Error getting documents: ", task.getException());
+            }
+        });
+    }
+
+
+    public static void updateBoardCount() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DocumentReference historyRef = db.collection("history").document(user.getUid());
+        historyRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    boardCount = Integer.parseInt(String.valueOf(document.get(("board_count"))));
+                    System.out.println("here1" + boardCount);
+                    streakCount = Integer.parseInt(String.valueOf(document.get(("streak"))));
+                    System.out.println("here2" + streakCount);
+                    winCount = Integer.parseInt(String.valueOf(document.get(("wins"))));
+                    System.out.println("here3" + winCount);
+                }
+            }
+        });
+    }
+
     private static class HistoryPagerAdapter extends FragmentStateAdapter {
 
         public HistoryPagerAdapter(FragmentActivity activity) {
@@ -90,53 +140,5 @@ public class HistoryActivity extends FragmentActivity {
         }
 
     }
-
-        public static void getCompleteHistoryDataBase(){
-        for(int i = 1; i<=boardCount; i++){
-            System.out.println("i"+i);
-            readBoardFromDataBase(String.valueOf(i));
-        }
-        }
-
-        public int getBoardCount() {return boardCount;}
-        public int getWinCount() {return winCount;}
-        public int getStreakCount() {return streakCount;}
-
-        public static void readBoardFromDataBase(String id) {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            DocumentReference docRef = db.collection("history").document(user.getUid());
-            docRef.collection(id).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("W", document.getId() + " => " + document.getData());
-                        HistoryItem history = document.toObject(HistoryItem.class);
-                        items.add(history);
-                    }
-                } else {
-                    Log.d("W", "Error getting documents: ", task.getException());
-                }
-            });
-        }
-
-
-        public static void updateBoardCount(){
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            DocumentReference historyRef = db.collection("history").document(user.getUid());
-            historyRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null && document.exists()) {
-                        boardCount = Integer.parseInt(String.valueOf(document.get(("board_count"))));
-                        System.out.println("here1"+boardCount);
-                        streakCount = Integer.parseInt(String.valueOf(document.get(("streak"))));
-                        System.out.println("here2"+streakCount);
-                        winCount = Integer.parseInt(String.valueOf(document.get(("wins"))));
-                        System.out.println("here3"+winCount);
-                    }
-                }
-            });
-        }
-    }
+}
 
