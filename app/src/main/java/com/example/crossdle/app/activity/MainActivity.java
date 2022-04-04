@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ConstraintLayout constraintLayout = findViewById(R.id.layout_main);
 
         Button settings = findViewById(R.id.button_main_settings);
+        themeData = "Default";
 
         buttons = new Button[] {
                 findViewById(R.id.button_main_daily_crossdle),
