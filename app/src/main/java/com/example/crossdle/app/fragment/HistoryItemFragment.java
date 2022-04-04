@@ -65,8 +65,8 @@ public class HistoryItemFragment extends Fragment {
         char[][] colourLayout = item.toCharArr(item.getColourLayout());
         board.setActive(false);
         board.forEach(cell -> cell.setValue(cell.getData()));
-        for (int i = 0; i<board.getBoard().length; i++){
-            for (int j = 0; j<board.getBoard()[0].length; j++){
+        for (int i = 0; i<board.getData().length; i++){
+            for (int j = 0; j<board.getData()[0].length; j++){
                 board.getCell(j,i).setData(colourLayout[i][j]);
             }
         }

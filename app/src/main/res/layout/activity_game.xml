@@ -21,38 +21,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:gravity="clip_horizontal|center"
+        android:gravity="clip_horizontal|center|center_vertical"
         android:paddingTop="42dp"
         android:text="@string/game_heading_daily"
         android:textAlignment="gravity"
         android:textColor="@color/white"
         android:textSize="32sp"
         android:visibility="visible" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/game_textView_attempts"
-            android:layout_width="277dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center|end"
-            android:text="@string/game_attempts"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/game_textView_remaining"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:text="@string/game_remaining"
-            android:textSize="16sp" />
-    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -65,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             tools:layout="@layout/fragment_board" />
-
     </FrameLayout>
 
     <androidx.fragment.app.FragmentContainerView
@@ -75,5 +49,4 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         tools:layout="@layout/fragment_keyboard" />
-
 </LinearLayout>

@@ -27,13 +27,14 @@
         android:paddingHorizontal="30dp"
         android:text="@string/play_daily_crossdle"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.566" />
+        app:layout_constraintVertical_bias="0.566"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/button_main_random_crossdle"
@@ -43,13 +44,14 @@
         android:paddingHorizontal="18dp"
         android:text="@string/play_random_crossdle"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.673" />
+        app:layout_constraintVertical_bias="0.673"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/button_main_history"
@@ -59,12 +61,13 @@
         android:paddingHorizontal="60dp"
         android:text="@string/history"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.774" />
+        app:layout_constraintVertical_bias="0.774"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/button_main_settings"
@@ -74,12 +77,13 @@
         android:paddingHorizontal="57dp"
         android:text="@string/settings"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.881" />
+        app:layout_constraintVertical_bias="0.881"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,9 +24,10 @@ public class HistoryItem implements Serializable {
         this.colourLayout = colourLayout;
     }
 
-    public HistoryItem(){}
+    public HistoryItem() {}
 
     public String getGameId() { return gameId; }
+    public int getGameIdAsInt() { return Integer.valueOf(gameId); }
     public String getTime() {
         return time;
     }
@@ -77,6 +78,4 @@ public class HistoryItem implements Serializable {
         }
         return charArr;
     }
-
-
 }

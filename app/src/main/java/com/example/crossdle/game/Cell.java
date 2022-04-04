@@ -3,8 +3,10 @@ package com.example.crossdle.game;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
 import com.example.crossdle.R;
@@ -63,6 +65,8 @@ public class Cell implements Serializable
     public int getY() { return y; }
 
     public char getData() { return data; }
+    public char getValue() { return this.value; }
+    public char getAttempt() { return attempt; }
 
     public Cell getNeighbour(Word.Orientation orientation, boolean next) {
         return neighbours.get(orientation, next);
@@ -89,6 +93,7 @@ public class Cell implements Serializable
         }
     }
 
+    public void setData(char data) { this.data = data; }
     public void setValue(char value) {
         this.value = value;
     }
@@ -97,9 +102,6 @@ public class Cell implements Serializable
     }
     public void setActive(boolean active) {
         this.active = active;
-    }
-    public void setData(char data) {
-        this.data = data;
     }
 
     public void setNeighbours(Cell up, Cell right, Cell down, Cell left) {
@@ -119,10 +121,6 @@ public class Cell implements Serializable
     }
     public boolean isAttempted() { return attempt != Character.MIN_VALUE; }
 
-    public char getValue() {
-        return this.value;
-    }
-
     private boolean isHead(Word.Orientation orientation) {
         Cell neighbour = neighbours.get(orientation, false);
         return neighbour == null || !neighbour.isSet();
@@ -139,13 +137,15 @@ public class Cell implements Serializable
             State state = getState();
             if (selected) {
                 GradientDrawable background = new GradientDrawable();
+                background.setColor(COLOR_HIDDEN);
                 background.setCornerRadius(SELECTED_RADIUS);
+                background.setStroke(SELECTED_STROKE, COLOR_SELECTED);
+                if (attempt == Character.MIN_VALUE || attempt == value) {
+                    background.setColor(state.getColor());
+                }
                 if (active) {
                     background.setColor(COLOR_SELECTED);
                     background.setStroke(SELECTED_STROKE, COLOR_ACTIVE);
-                } else {
-                    background.setColor(COLOR_HIDDEN);
-                    background.setStroke(SELECTED_STROKE, COLOR_SELECTED);
                 }
                 view.setBackground(background);
             } else {
@@ -156,8 +156,15 @@ public class Cell implements Serializable
         }
     }
 
-    public void animate(View view) {
+    public void animateAttempt(View view) {
         Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.bounce);
+        view.startAnimation(animation);
+    }
+
+    public void animateInvalid(View view) {
+        int repeats = 3;
+        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.blink_anim);
+        animation.restrictDuration(animation.getDuration() * repeats);
         view.startAnimation(animation);
     }
 
@@ -182,6 +189,4 @@ public class Cell implements Serializable
             }
         }
     }
-
-
 }

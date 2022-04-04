@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MediaPlayer mediaPlayer2;
 
     private boolean settingsOpen = false;
+    private boolean stopMusic = true;
 
     String themeData;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         themeData = intent.getStringExtra("theme");
         ConstraintLayout constraintLayout = findViewById(R.id.layout_main);
 
+        settings = findViewById(R.id.button_main_settings);
         if(themeData != null){
             switch (themeData){
                 case "Ocean":
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 mediaPlayer.start();
             }
+            mediaPlayer.start();
         } else {
             settingsOpen = false;
         }
@@ -157,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         view.postDelayed(() -> changeActivity(view), timeout);
         mediaPlayer2 = MediaPlayer.create(this, R.raw.button_sound_effect);
         mediaPlayer2.start();
+
     }
 
     public void onOpenSettings(View view) {

@@ -6,8 +6,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -25,22 +23,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class HistoryActivity extends FragmentActivity {
-    private ViewPager2 viewPager;
-    private static final ArrayList<HistoryItem> items = new ArrayList<>();
-    private static int boardCount;
-    private static int winCount;
-    private static int streakCount;
     private TextView gameView;
     private TextView streakView;
     private TextView winView;
+    private ViewPager2 viewPager;
 
-
-
+    private final ArrayList<HistoryItem> items = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,23 +42,17 @@ public class HistoryActivity extends FragmentActivity {
         gameView = findViewById(R.id.history_textView_games);
         streakView = findViewById(R.id.history_textView_streak);
         winView = findViewById(R.id.history_textView_win);
-        FragmentStateAdapter adapter = new HistoryPagerAdapter(this);
         viewPager = findViewById(R.id.history_viewPager);
-        viewPager.setAdapter(adapter);
-
     }
-
 
     @Override
     protected void onStart() {
         super.onStart();
-        gameView.setText(String.valueOf(boardCount));
-        streakView.setText(String.valueOf(streakCount));
-        String winPercent = String.format("%.2f",winCount*100.0/(boardCount))+"%";
-        winView.setText(winPercent);
-        FragmentStateAdapter adapter = new HistoryPagerAdapter(this);
-        viewPager = findViewById(R.id.history_viewPager);
-        viewPager.setAdapter(adapter);
+        readStats();
+        readHistory(() -> {
+            FragmentStateAdapter adapter = new HistoryPagerAdapter(this);
+            viewPager.setAdapter(adapter);
+        });
     }
 
 
@@ -78,7 +65,48 @@ public class HistoryActivity extends FragmentActivity {
         }
     }
 
-    private static class HistoryPagerAdapter extends FragmentStateAdapter {
+    public void readHistory(Runnable onComplete) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DocumentReference docRef = db.collection("history").document(user.getUid());
+
+        docRef.collection("games").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Log.d("W", document.getId() + " => " + document.getData());
+                    HistoryItem history = document.toObject(HistoryItem.class);
+                    items.add(history);
+                }
+                onComplete.run();
+            } else {
+                Log.d("W", "Error getting documents: ", task.getException());
+            }
+        });
+    }
+
+
+    public void readStats() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DocumentReference historyRef = db.collection("history").document(user.getUid());
+        historyRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    int games = document.getLong("board_count").intValue();
+                    gameView.setText(String.valueOf(games));
+
+                    int streak = document.getLong("streak").intValue();
+                    streakView.setText(String.valueOf(streak));
+
+                    int wins = document.getLong("wins").intValue();
+                    winView.setText(String.format("%.2f", wins * 100.0 / games) + "%");
+                }
+            }
+        });
+    }
+
+    private class HistoryPagerAdapter extends FragmentStateAdapter {
 
         public HistoryPagerAdapter(FragmentActivity activity) {
             super(activity);
@@ -91,57 +119,8 @@ public class HistoryActivity extends FragmentActivity {
 
         @Override
         public int getItemCount() {
-            return boardCount;
-        }
-
-    }
-
-        public static void getCompleteHistoryDataBase(){
-        for(int i = 1; i<=boardCount; i++){
-            System.out.println("i"+i);
-            readBoardFromDataBase(String.valueOf(i));
-        }
-        }
-
-        public int getBoardCount() {return boardCount;}
-        public int getWinCount() {return winCount;}
-        public int getStreakCount() {return streakCount;}
-
-        public static void readBoardFromDataBase(String id) {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            DocumentReference docRef = db.collection("history").document(user.getUid());
-            docRef.collection(id).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("W", document.getId() + " => " + document.getData());
-                        HistoryItem history = document.toObject(HistoryItem.class);
-                        items.add(history);
-                    }
-                } else {
-                    Log.d("W", "Error getting documents: ", task.getException());
-                }
-            });
-        }
-
-
-        public static void updateBoardCount(){
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            DocumentReference historyRef = db.collection("history").document(user.getUid());
-            historyRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null && document.exists()) {
-                        boardCount = Integer.parseInt(String.valueOf(document.get(("board_count"))));
-                        System.out.println("here1"+boardCount);
-                        streakCount = Integer.parseInt(String.valueOf(document.get(("streak"))));
-                        System.out.println("here2"+streakCount);
-                        winCount = Integer.parseInt(String.valueOf(document.get(("wins"))));
-                        System.out.println("here3"+winCount);
-                    }
-                }
-            });
+            return items.size();
         }
     }
+}
 
