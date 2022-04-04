@@ -19,6 +19,9 @@ public class LayoutGenerator {
         }
     }
 
+    /**
+     * Places a word horizontally in the layout grid.
+     */
     public static void placeWordHorizontal(char[][] board, String word, int row, int column){
         for (int i = 0; i < word.length(); i++)
         {
@@ -26,6 +29,10 @@ public class LayoutGenerator {
             column++;
         }
     }
+
+    /**
+     * Places a word vertically in the layout grid.
+     */
     public static void placeWordVertical(char[][] board, String word, int row, int column){
 
         for (int i = 0; i < word.length(); i++)
@@ -67,6 +74,9 @@ public class LayoutGenerator {
         return false;
     }
 
+    /**
+     * Checks all horizontal neighbours to see if the cells are empty.
+     */
     public static boolean checkHorizontalNeighbours(char[][] board,int row,int column, int length){
         for (int i = 1; i <=length; i++){
             if(board[row][column+i]!=Board.EMPTY_LAYOUT_CELL){
@@ -95,6 +105,9 @@ public class LayoutGenerator {
         return true;
     }
 
+    /**
+     * Checks all vertical neighbours to see if the cells are empty.
+     */
     public static boolean checkVerticalNeighbours(char[][] board,int row,int column, int length){
         for (int i = 1; i <=length; i++){
             if(board[row+i][column]!=Board.EMPTY_LAYOUT_CELL){
@@ -122,6 +135,9 @@ public class LayoutGenerator {
         return true;
     }
 
+    /**
+     * Attempts to place a word withing the layout grid.
+     */
     public static boolean placeRandomWord(char[][] board, String word){
         for (int row = 0; row < board.length; row++)
         {
@@ -143,6 +159,9 @@ public class LayoutGenerator {
         return false;
     }
 
+    /**
+     * Checks if a word can be placed at a position on the layout grid.
+     */
     public static String canWordBePlaced(char[][] board, String word, int row, int column, int intersectionIndex){
         int roomSecondHalf = word.length() -  intersectionIndex-1;
         int roomFirstHalf = word.length() - roomSecondHalf-1;
@@ -166,7 +185,9 @@ public class LayoutGenerator {
         return null;
     }
 
-
+    /**
+     * Generates a crossword and returns true if was successful.
+     */
     public static boolean generateCrossword(){
         char[][] board = Board.generateEmptyLayout(Board.DEFAULT_SIZE);
 
@@ -205,6 +226,9 @@ public class LayoutGenerator {
         return false;
     }
 
+    /**
+     * Returns a generated board.
+     */
     public static char[][] returnBoard() throws IOException {
         while(true){
             if(generateCrossword()){
