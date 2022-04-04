@@ -8,6 +8,8 @@
 
     <string name="game_heading_daily">Daily</string>
     <string name="game_heading_random">Random</string>
+    <string name="game_attempts">Remaining attempts:</string>
+    <string name="game_remaining">20</string>
 
     <!-- Gamebar -->
 
@@ -25,7 +27,7 @@
 
     <string name="history_item_field_title">@string/app_name</string>
     <string name="history_item_field_time">Time</string>
-    <string name="history_item_field_correct">Correct Words</string>
+    <string name="history_item_field_correct">Correct Letters</string>
     <string name="history_item_field_attempts">Attempts</string>
 
     <!-- Keyboard -->
@@ -67,5 +69,12 @@
     <string name="play_random_crossdle">Random Crossdle</string>
     <string name="history">History</string>
     <string name="settings">Settings</string>
+
+    <!-- Setting -->
+
+    <string name="volume">Volume</string>
+    <string name="confirm">Confirm</string>
+    <string name="themes">Themes</string>
+    <string name="title">Settings</string>
 
 </resources>
