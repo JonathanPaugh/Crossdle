@@ -82,10 +82,9 @@
 
     <!-- Help -->
 
-    <string name="help_crossdle">Fill in each row/column with words that have the same length as
-        said row/column. Afterwards press Enter to see if you have guess the correct word. Letters
-        that are in the word and are in the correct spot will turn green, letters that are in
-        the word but in a different spot will be yellow, and letters not in the word will be gray.
+    <string name="help_crossdle"> Tap a column or a row and type in your guess! Only valid words can be entered. Press enter after each guess to receive hints.
+     Letters correctly placed turn green and letters in the word but incorrectly placed turn yellow. The keyboard can track hints as well!
+        You have 20 tries before the game ends. Have fun!
     </string>
     <string name="help_title">How To Play:</string>
     <string name="help_understood_button">Understood</string>
