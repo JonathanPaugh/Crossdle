@@ -58,6 +58,10 @@ public class Board implements Serializable
         this.data = convertData(data);
     }
 
+    public Cell[][] getData() {
+        return data;
+    }
+
     public Cell getCell(int x, int y) {
         return data[y][x];
     }
