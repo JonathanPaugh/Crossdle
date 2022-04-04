@@ -1,10 +1,6 @@
 package com.example.crossdle.app.activity;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
@@ -14,6 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.crossdle.R;
 import com.example.crossdle.app.popup.SettingsPopup;
@@ -24,8 +22,6 @@ import com.example.crossdle.app.popup.SettingsPopup;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button[] buttons;
-
-    private Button settings;
 
     private MediaPlayer mediaPlayer;
     private MediaPlayer mediaPlayer2;
@@ -38,9 +34,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        themeData = intent.getStringExtra("theme");
+        ConstraintLayout constraintLayout = findViewById(R.id.layout_main);
+
+        if(themeData != null){
+            switch (themeData){
+                case "Ocean":
+                    constraintLayout.setBackgroundResource(R.drawable.gradient_list_ocean);
+                    break;
+                case "Emerald Forest":
+                    constraintLayout.setBackgroundResource(R.drawable.gradient_list_emerald_green);
+                    break;
+                case "Strawberry":
+                    constraintLayout.setBackgroundResource(R.drawable.gradient_list_strawberry);
+                    break;
+                default:
+                    constraintLayout.setBackgroundResource(R.drawable.gradient_list);
+                    break;
+            }
+        } else {
+            constraintLayout.setBackgroundResource(R.drawable.gradient_list);
+            themeData = "Default";
+        }
 
 
-        settings = findViewById(R.id.button_main_settings);
+        Button settings = findViewById(R.id.button_main_settings);
 
         buttons = new Button[] {
                 findViewById(R.id.button_main_daily_crossdle),
@@ -55,21 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         settings.setOnClickListener(this::onOpenSettings);
 
-        Intent intent = getIntent();
-        themeData = intent.getStringExtra("theme");
-        if(themeData != null){
-            switch (themeData){
-                case "Strawberry":
-                    getApplication().setTheme(R.style.theme_strawberry);
-                    System.out.println("hello");
-                case "Emerald Forest":
-                    getApplication().setTheme(R.style.theme_strawberry);
-                case "Ocean":
-                    getApplication().setTheme(R.style.theme_strawberry);
-            }
-        }
-
-        ConstraintLayout constraintLayout = findViewById(R.id.layout_main);
         AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2500);
         animationDrawable.setExitFadeDuration(5000);
@@ -93,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mediaPlayer.stop();
                 mediaPlayer.start();
             } else {
-                System.out.println("hello");
                 mediaPlayer.start();
             }
         } else {
@@ -111,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void animFadeIn(View view, int duration) { ;
+    private void animFadeIn(View view, int duration) {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.fadein);
         animation.setDuration(duration);
         view.startAnimation(animation);
@@ -142,9 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             animation.setDuration(duration);
             view.postDelayed(() -> {
                 buttons[index].startAnimation(animation);
-                view.postDelayed(() -> {
-                    buttons[index].setVisibility(View.INVISIBLE);
-                }, duration);
+                view.postDelayed(() -> buttons[index].setVisibility(View.INVISIBLE), duration);
             }, (long) i * interval);
         }
     }
@@ -169,11 +170,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void changeActivity(View view) {
         if (view.getId() == R.id.button_main_daily_crossdle)  {
             Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra("theme", themeData);
             startActivity(intent);
         }
         if (view.getId() == R.id.button_main_random_crossdle) {
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra(GameActivity.ARG_TYPE, true);
+            intent.putExtra("theme", themeData);
             startActivity(intent);
         }
         if (view.getId() == R.id.button_main_history) {

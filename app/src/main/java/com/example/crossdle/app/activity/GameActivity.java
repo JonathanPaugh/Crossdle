@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.crossdle.app.HistoryItem;
@@ -50,6 +51,28 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        Intent intent = getIntent();
+        String themeData = intent.getStringExtra("theme");
+        LinearLayout linearLayout = findViewById(R.id.linear_layout_game);
+
+        if(themeData != null){
+            switch (themeData){
+                case "Ocean":
+                    linearLayout.setBackgroundResource(R.drawable.gradient_list_ocean);
+                    break;
+                case "Emerald Forest":
+                    linearLayout.setBackgroundResource(R.drawable.gradient_list_emerald_green);
+                    break;
+                case "Strawberry":
+                    linearLayout.setBackgroundResource(R.drawable.gradient_list_strawberry);
+                    break;
+                default:
+                    linearLayout.setBackgroundResource(R.drawable.gradient_list);
+                    break;
+            }
+        }
+
 
         BoardView view = new BoardView();
 
