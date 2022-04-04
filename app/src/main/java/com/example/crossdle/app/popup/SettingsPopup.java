@@ -37,7 +37,6 @@ public class SettingsPopup extends Activity implements View.OnClickListener, Ada
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-
         themesSpinner = findViewById(R.id.spinner_settings_theme);
         themesArray = getResources().getStringArray(R.array.themes);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, themesArray);
@@ -49,8 +48,6 @@ public class SettingsPopup extends Activity implements View.OnClickListener, Ada
         mMyEdit = mMyPrefs.edit();
         int selectedPosition = mMyPrefs.getInt("selected_position", 0) ;
         themesSpinner.setSelection(selectedPosition);
-
-
 
         getActionBar().hide();
 
@@ -83,24 +80,11 @@ public class SettingsPopup extends Activity implements View.OnClickListener, Ada
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-    }
-
-    @Override
-    public void onClick(View view) {
-        if(selectedTheme != null){
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("theme", selectedTheme);
-            startActivity(intent);
-        }
     }
 
     @Override
@@ -111,7 +95,14 @@ public class SettingsPopup extends Activity implements View.OnClickListener, Ada
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
+    public void onNothingSelected(AdapterView<?> adapterView) {}
 
+    @Override
+    public void onClick(View view) {
+        if(selectedTheme != null){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("theme", selectedTheme);
+            startActivity(intent);
+        }
     }
 }

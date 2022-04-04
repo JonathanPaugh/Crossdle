@@ -33,7 +33,8 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.566" />
+        app:layout_constraintVertical_bias="0.566"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/button_main_random_crossdle"
@@ -49,7 +50,8 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.673" />
+        app:layout_constraintVertical_bias="0.673"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/button_main_history"
@@ -64,7 +66,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.774" />
+        app:layout_constraintVertical_bias="0.774"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/button_main_settings"
@@ -80,6 +83,7 @@
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.881" />
+        app:layout_constraintVertical_bias="0.881"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
