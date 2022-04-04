@@ -6,6 +6,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a word on the board in the game state. A word is comprised of a group of adjacent
+ * cells in a horizontal or vertical direction.
+ */
 public class Word implements Serializable
 {
     public enum Orientation

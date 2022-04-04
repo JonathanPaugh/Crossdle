@@ -13,6 +13,10 @@ import com.example.crossdle.R;
 
 import java.io.Serializable;
 
+/***
+ * Represents a single cell on the game board. Has the capability to hold a value for its true
+ * letter, the most recent letter in a guessed word, and a attempt letter for a word to be guessed.
+ */
 public class Cell implements Serializable
 {
     public enum State

@@ -20,6 +20,10 @@ import com.example.crossdle.game.Cell;
 import com.example.crossdle.game.Selection;
 import com.example.crossdle.game.Word;
 
+/***
+ * Represents the controller in the MVC architecture for a board. Takes the user input and sends it
+ * to the model. ...more here
+ */
 public class BoardFragment extends Fragment {
     private static final String ARG_BOARD = "ARG_BOARD";
 

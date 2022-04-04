@@ -8,7 +8,8 @@ import java.util.Queue;
 import java.util.function.Consumer;
 
 /***
- * Represents a board that holds the cells of data pertaining to the game state.
+ * Represents the model in the MVC architecture for a board. Holds the cells of data pertaining
+ * to the game state. This is the main interface for interacting with most things game related.
  */
 public class Board implements Serializable
 {
