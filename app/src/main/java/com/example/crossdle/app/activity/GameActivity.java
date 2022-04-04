@@ -80,6 +80,7 @@ public class GameActivity extends AppCompatActivity {
         board.setOnLose(this::lose);
 
         view.setViewHandler(boardFragment::getView);
+        view.setViewKeyboardHandler(keyboardFragment::getView);
 
         startTime = System.currentTimeMillis();
 

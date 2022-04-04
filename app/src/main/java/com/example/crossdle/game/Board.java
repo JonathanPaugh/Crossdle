@@ -106,6 +106,7 @@ public class Board implements Serializable
     public void clickCell(int x, int y) {
         select(x, y);
         draw();
+        drawKeyboard();
     }
 
     public void clickKey(char character) {
@@ -260,6 +261,12 @@ public class Board implements Serializable
         if (view == null) { return; }
         view.drawBoard(data);
         view.updateAttempts(attemptsRemaining);
+    }
+
+    public void drawKeyboard() {
+        if (view == null) { return; }
+        if (selection.getWord() == null) { return; }
+        view.drawKeyboard(selection.getWord().getCells());
     }
 
     public void animateAttempt(Cell cell) {
