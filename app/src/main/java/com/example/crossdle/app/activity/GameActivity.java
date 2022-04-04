@@ -57,8 +57,8 @@ public class GameActivity extends AppCompatActivity {
 
         WordBase.load(this);
         WordDictionary.load(this);
-        Intent intent = getIntent();
-        String themeData = intent.getStringExtra("theme");
+        Intent intent2 = getIntent();
+        String themeData = intent2.getStringExtra("theme");
         LinearLayout linearLayout = findViewById(R.id.linear_layout_game);
 
         if(themeData != null){
@@ -77,9 +77,6 @@ public class GameActivity extends AppCompatActivity {
                     break;
             }
         }
-
-
-        BoardView view = new BoardView();
 
         Intent intent = getIntent();
         boolean type = intent.getBooleanExtra(ARG_TYPE, false);

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         themeData = intent.getStringExtra("theme");
         ConstraintLayout constraintLayout = findViewById(R.id.layout_main);
 
-        settings = findViewById(R.id.button_main_settings);
+        Button settings = findViewById(R.id.button_main_settings);
         if(themeData != null){
             switch (themeData){
                 case "Ocean":
@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             constraintLayout.setBackgroundResource(R.drawable.gradient_list);
             themeData = "Default";
         }
-
-
-        Button settings = findViewById(R.id.button_main_settings);
 
         buttons = new Button[] {
                 findViewById(R.id.button_main_daily_crossdle),
