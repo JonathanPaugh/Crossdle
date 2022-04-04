@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        HistoryActivity.updateBoardCount();
 
         settings = findViewById(R.id.button_main_settings);
 
@@ -146,11 +146,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.button_main_history) {HistoryActivity.getCompleteHistoryDataBase();}
         int timeout = 1500;
         animSlideOut(findViewById(R.id.layout_main));
         view.postDelayed(() -> changeActivity(view), timeout);
         mediaPlayer2 = MediaPlayer.create(this, R.raw.button_sound_effect);
         mediaPlayer2.start();
+
     }
 
     public void onOpenSettings(View view) {
