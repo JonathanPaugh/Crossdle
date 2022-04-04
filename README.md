@@ -15,6 +15,6 @@ This project was built for COMP 3717 (Mobile Dev with Android Tech)
 9. Thanks for playing!
 
 ## Contributors
-https://github.com/jeffphan99
-https://github.com/ManChuenLee
+https://github.com/jeffphan99 \
+https://github.com/ManChuenLee \
 https://github.com/JonathanPaugh
