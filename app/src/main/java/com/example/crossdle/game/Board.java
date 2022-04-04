@@ -26,7 +26,7 @@ public class Board implements Serializable
     private final Cell[][] data;
     private final int size;
 
-    private int attempts = DEFAULT_ATTEMPTS;
+    private int attemptsRemaining = DEFAULT_ATTEMPTS;
     private boolean active = true;
     private Selection selection = new Selection();
 
@@ -66,8 +66,12 @@ public class Board implements Serializable
         return data[y][x];
     }
 
-    public int getAttempts() {
-        return attempts;
+    public int getAttemptsTaken() {
+        return DEFAULT_ATTEMPTS - attemptsRemaining;
+    }
+
+    public int getAttemptsRemaining() {
+        return attemptsRemaining;
     }
 
     public Selection getSelection() { return selection; }
@@ -151,9 +155,9 @@ public class Board implements Serializable
             win();
         }
 
-        attempts -= 1;
+        attemptsRemaining -= 1;
 
-        if (attempts <= 0) {
+        if (attemptsRemaining <= 0) {
             lose();
         }
     }
@@ -259,7 +263,7 @@ public class Board implements Serializable
     public void draw() {
         if (view == null) { return; }
         view.drawBoard(data);
-        view.updateAttempts(attempts);
+        view.updateAttempts(attemptsRemaining);
     }
 
     public void animateAttempt(Cell cell) {
