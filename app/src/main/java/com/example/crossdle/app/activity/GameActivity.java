@@ -49,6 +49,7 @@ public class GameActivity extends AppCompatActivity {
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private long startTime;
     private String timeTaken;
+    private static char[][] dailyBoard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +84,15 @@ public class GameActivity extends AppCompatActivity {
 
         char[][] layout = null;
         if (type) {
+            TextView titleView = findViewById(R.id.game_textView_title);
+            titleView.setText(getResources().getString(R.string.game_random_title));
             try {
                 layout = LayoutGenerator.returnBoard();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            layout = Board.TEST_LAYOUT;
+            layout = dailyBoard;
         }
 
         BoardView view = new BoardView();
@@ -228,5 +231,49 @@ public class GameActivity extends AppCompatActivity {
             }
         }
         return count;
+    }
+
+    public static void getDailyBoard(){
+        long secondsNow = System.currentTimeMillis()/1000L;
+        long secondsInADay= 86400L;
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference dailyRef = db.collection("daily").document("daily");
+        dailyRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    long dailyTime = (long) document.get("time");
+                    if(secondsNow-dailyTime>secondsInADay){
+                        Map<String, Object> daily = new HashMap<>();
+                        try {
+                            char[][] layout = LayoutGenerator.returnBoard();
+                            daily.put("daily", Board.charToList(layout));
+                            daily.put("time", System.currentTimeMillis()/1000L);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        dailyRef.set(daily).addOnSuccessListener(aVoid -> Log.d("W", "DocumentSnapshot successfully written!"))
+                                .addOnFailureListener(e -> Log.w("W", "Error writing document", e));
+                    }else{
+
+                        dailyRef.get().addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                DocumentSnapshot document1 = task1.getResult();
+                                if (document1.exists()) {
+                                    Log.d("W", "DocumentSnapshot data: " + document1.getData());
+                                    List<String> list = (List<String>) document1.getData().get("daily");
+                                    dailyBoard =  Board.listToChar(list);
+                                } else {
+                                    Log.d("W", "No such document");
+                                }
+                            } else {
+                                Log.d("W", "get failed with ", task1.getException());
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 }

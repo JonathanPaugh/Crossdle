@@ -10,6 +10,7 @@
     <string name="game_heading_random">Random</string>
     <string name="game_attempts">Remaining attempts:</string>
     <string name="game_remaining">20</string>
+    <string name="game_random_title">Random</string>
 
     <!-- Gamebar -->
 

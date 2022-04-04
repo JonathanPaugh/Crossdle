@@ -302,4 +302,25 @@ public class Board implements Serializable
         });
         return values;
     }
+
+    public static char[][] listToChar(List<String> list){
+        char[][] arr = new char[6][6];
+        int count = 0;
+        for (int y = 0; y < arr.length; y++) {
+            for (int x = 0; x < arr[y].length; x++) {
+                arr[y][x] = list.get(count).charAt(0);
+                count+=1;
+            }
+        }
+        return arr;
+    }
+    public static List<String> charToList(char[][] data) {
+        List<String> list = new ArrayList<>();
+        for (int y = 0; y < data.length; y++) {
+            for (int x = 0; x < data[y].length; x++) {
+                list.add(Character.toString(data[y][x]));
+            }
+        }
+        return list;
+    }
 }
