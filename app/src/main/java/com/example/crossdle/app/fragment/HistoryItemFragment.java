@@ -17,6 +17,9 @@ import com.example.crossdle.app.HistoryItem;
 import com.example.crossdle.game.Board;
 import com.example.crossdle.game.BoardView;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class HistoryItemFragment extends Fragment {
     private static final String ARG_ITEM = "ARG_ITEM";
 
@@ -62,14 +65,9 @@ public class HistoryItemFragment extends Fragment {
 
     private Board createBoard(BoardView boardView, char[][] layout) {
         Board board = new Board(boardView, layout);
-        char[][] colourLayout = item.toCharArr(item.getColourLayout());
         board.setActive(false);
-        board.forEach(cell -> cell.setValue(cell.getData()));
-        for (int i = 0; i<board.getData().length; i++){
-            for (int j = 0; j<board.getData()[0].length; j++){
-                board.getCell(j,i).setData(colourLayout[i][j]);
-            }
-        }
+        Queue values = new LinkedList(item.getColourLayout());
+        board.forEach(cell -> cell.setValue(((String)values.poll()).charAt(0)));
         return board;
     }
 
