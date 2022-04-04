@@ -1,47 +1,18 @@
 package com.example.crossdle.game;
 
-import android.util.Log;
+import com.example.crossdle.bank.WordBase;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Random;
 
-public class RandomBoardGenerator{
+public class LayoutGenerator {
+    public static char[][] layout;
 
-    public static final char EMPTY = ' ';
-    public static final int FOUR_LETTER_WORD_BASE_SIZE = 448;
-    public static final int FIVE_LETTER_WORD_BASE_SIZE = 2073;
-    public static char[][] Board;
-
-    static char[][] generateBoard(){
-        final int ROWS = 6;
-        final int COLS = 6;
-
-        char[][] board = new char [ROWS][COLS];
-
-        for (int i = 0; i < ROWS; i++)
-        {
-            for (int j = 0; j < COLS; j++)
-            {
-                board[i][j] = EMPTY;
-            }
+    static void printLayout(char[][] board) {
+        for (char[] row : board) {
+            System.out.println(Arrays.toString(row));
         }
-        return board;
-    }
-
-    static void printBoard(char[][] board){
-
-        for (char[] chars : board) {
-            System.out.println();
-            for (int j = 0; j < board[0].length; j++) {
-                System.out.print(chars[j] + " ");
-            }
-        }
-
     }
 
     public static void placeWordHorizontal(char[][] board, String word, int row, int column){
@@ -74,7 +45,7 @@ public class RandomBoardGenerator{
     }
 
     public static boolean placeSecondWord(char[][] board, String word){
-        if(board[0][2]!=EMPTY){
+        if(board[0][2]!=Board.EMPTY_LAYOUT_CELL){
             for(int i = 0; i<board.length; i++){
                 if(board[0][i]==word.charAt(0)){
                     placeWordVertical(board, word, 0, i);
@@ -94,55 +65,55 @@ public class RandomBoardGenerator{
 
     public static boolean checkHorizontalNeighbours(char[][] board,int row,int column, int length){
         for (int i = 1; i <=length; i++){
-            if(board[row][column+i]!=EMPTY){
+            if(board[row][column+i]!=Board.EMPTY_LAYOUT_CELL){
                 return false;
             }
             if(row+1<6){
-                if(board[row+1][column+i]!=EMPTY){
+                if(board[row+1][column+i]!= Board.EMPTY_LAYOUT_CELL){
                     return false;
                 }
             }
             if(row-1>-1){
-                if(board[row-1][column+i]!=EMPTY){
+                if(board[row-1][column+i]!=Board.EMPTY_LAYOUT_CELL){
                     return false;
                 }
             }
 
         }
         if(column+length+1<6){
-            if(board[row][column+length+1]!=EMPTY){
+            if(board[row][column+length+1]!=Board.EMPTY_LAYOUT_CELL){
                 return false;
             }
         }
         if(column-1>-1){
-            return board[row][column - 1] == EMPTY;
+            return board[row][column - 1] == Board.EMPTY_LAYOUT_CELL;
         }
         return true;
     }
 
     public static boolean checkVerticalNeighbours(char[][] board,int row,int column, int length){
         for (int i = 1; i <=length; i++){
-            if(board[row+i][column]!=EMPTY){
+            if(board[row+i][column]!=Board.EMPTY_LAYOUT_CELL){
                 return false;
             }
             if(column+1<6){
-                if(board[row+i][column+1]!=EMPTY){
+                if(board[row+i][column+1]!=Board.EMPTY_LAYOUT_CELL){
                     return false;
                 }
             }
             if(column-1>-1){
-                if(board[row+i][column-1]!=EMPTY){
+                if(board[row+i][column-1]!=Board.EMPTY_LAYOUT_CELL){
                     return false;
                 }
             }
         }
         if(row+length+1<6){
-            if(board[row+length+1][column]!=EMPTY){
+            if(board[row+length+1][column]!=Board.EMPTY_LAYOUT_CELL){
                 return false;
             }
         }
         if(row-1>-1){
-            return board[row - 1][column] == EMPTY;
+            return board[row - 1][column] == Board.EMPTY_LAYOUT_CELL;
         }
         return true;
     }
@@ -187,21 +158,21 @@ public class RandomBoardGenerator{
                     return("vertical");
                 }
             }
-
-
         }
         return null;
     }
 
 
     public static boolean generateCrossword(){
-        char[][] board = generateBoard();
-        String firstWord = WordBase.getFiveLetterRandom();
+        char[][] board = Board.generateEmptyLayout(Board.DEFAULT_SIZE);
+
+        String firstWord = WordBase.cached.getFiveLetterRandom();
         placeFirstWord(board, firstWord);
         System.out.println(firstWord);
+
         int count = 0;
-        while(true){
-            String secondWord = WordBase.getFiveLetterRandom();
+        while (true) {
+            String secondWord = WordBase.cached.getFiveLetterRandom();
             if(placeSecondWord(board,secondWord)){
                 System.out.println(secondWord);
                 break;
@@ -209,7 +180,7 @@ public class RandomBoardGenerator{
         }
 
         while(true){
-            String thirdWord = WordBase.getFourLetterRandom();
+            String thirdWord = WordBase.cached.getFourLetterRandom();
             if(placeRandomWord(board, thirdWord)){
                 System.out.println(thirdWord);
                 break;
@@ -218,11 +189,11 @@ public class RandomBoardGenerator{
 
         while(count<100){
             count++;
-            String fourthWord = WordBase.getFourLetterRandom();
+            String fourthWord = WordBase.cached.getFourLetterRandom();
             if(placeRandomWord(board,fourthWord)){
                 System.out.println(fourthWord);
-                printBoard(board);
-                Board = board;
+                printLayout(board);
+                layout = board;
                 return true;
             }
         }
@@ -236,8 +207,6 @@ public class RandomBoardGenerator{
                 break;
             }
         }
-        printBoard(Board);
-        return Board;
+        return layout;
     }
-
 }

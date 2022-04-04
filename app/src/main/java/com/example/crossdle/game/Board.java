@@ -1,10 +1,5 @@
 package com.example.crossdle.game;
 
-import static com.example.crossdle.app.activity.GameActivity.*;
-
-import com.example.crossdle.app.HistoryItem;
-import com.example.crossdle.app.activity.GameActivity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,23 +9,25 @@ import java.util.function.Consumer;
 
 public class Board implements Serializable
 {
-    public static final char[][] TEST_LAYOUT = new char[][]{
-            {' ', 'T', ' ', ' ', ' ', ' '},
-            {' ', 'E', ' ', 'S', ' ', ' '},
-            {' ', 'S', 'E', 'N', 'D', ' '},
-            {' ', 'T', ' ', 'A', ' ', ' '},
-            {' ', ' ', ' ', 'K', ' ', ' '},
-            {' ', ' ', ' ', 'E', ' ', ' '}};
+    public static final int DEFAULT_SIZE = 6;
+    public static final int DEFAULT_ATTEMPTS = 20;
 
-    private int DEFAULT_SIZE = 6;
+    public static final char EMPTY_LAYOUT_CELL = ' ';
+    public static final char[][] TEST_LAYOUT = new char[][] {
+        new char[] { ' ', 'T', ' ', ' ', ' ', ' ', },
+        new char[] { ' ', 'E', ' ', 'S', ' ', ' ', },
+        new char[] { ' ', 'S', 'E', 'N', 'D', ' ', },
+        new char[] { ' ', 'T', ' ', 'A', ' ', ' ', },
+        new char[] { ' ', ' ', ' ', 'K', ' ', ' ', },
+        new char[] { ' ', ' ', ' ', 'E', ' ', ' '  },
+    };
 
     private final BoardView view;
     private final Cell[][] data;
     private final int size;
 
-
+    private int attempts = DEFAULT_ATTEMPTS;
     private boolean active = true;
-
     private Selection selection = new Selection();
 
     private transient Runnable onWin;
@@ -49,7 +46,7 @@ public class Board implements Serializable
         this.data = wrapData(size, data);
     }
 
-    public Board(BoardView view, char... data) {
+    public Board(BoardView view, char[] data) {
         this.view = view;
         this.size = DEFAULT_SIZE;
         this.data = wrapData(size, data);
@@ -75,8 +72,6 @@ public class Board implements Serializable
 
     public Selection getSelection() { return selection; }
 
-    public Cell[][] getBoard(){return data;}
-
     public void setActive(boolean active) {
         this.active = active;
     }
@@ -84,68 +79,8 @@ public class Board implements Serializable
     public void setOnWin(Runnable runnable) {
         onWin = runnable;
     }
-
     public void setOnLose(Runnable runnable) {
         onLose = runnable;
-    }
-
-
-    public void clickKey(char character) {
-        if (!active) { return; }
-        if (!getSelection().isSet()) { return; }
-        animateCell(getSelection().getCurrent());
-        getSelection().next(character);
-        draw();
-    }
-
-    public void clickEnter() {
-        if (!active) { return; }
-        if (!selection.isSet()) {
-            return;
-        }
-        confirm();
-        draw();
-    }
-
-    public void clickBack() {
-        if (!active) { return; }
-        if (!selection.isSet()) { return; }
-        selection.prev();
-        draw();
-    }
-
-    public void confirm() {
-        Word word = selection.getWord();
-
-        if (!word.isValid()) {
-            return;
-        }
-
-        if (!word.isFilled()) {
-            return;
-        }
-
-        selection.confirm();
-
-        if (isComplete()) {
-            win();
-        }
-        updateAttempts();
-        if (attempts<1){
-            lose();
-        }
-    }
-
-    private void win() {
-        if (onWin != null) {
-            onWin.run();
-        }
-    }
-
-    private void lose() {
-        if (onLose != null) {
-            onLose.run();
-        }
     }
 
     private boolean isComplete() {
@@ -160,6 +95,69 @@ public class Board implements Serializable
         return true;
     }
 
+    public void forEach(Consumer<Cell> onNextCell) {
+        for (int y = 0; y < data.length; y++) {
+            for (int x = 0; x < data[y].length; x++) {
+                onNextCell.accept(data[y][x]);
+            }
+        }
+    }
+
+    public void clickCell(int x, int y) {
+        select(x, y);
+        draw();
+    }
+
+    public void clickKey(char character) {
+        if (!active) { return; }
+        if (!getSelection().isSet()) { return; }
+        animateAttempt(getSelection().getCurrent());
+        getSelection().next(character);
+        draw();
+    }
+
+    public void clickEnter() {
+        if (!active) { return; }
+        if (!selection.isSet()) {
+            return;
+        }
+        guess();
+        draw();
+    }
+
+    public void clickBack() {
+        if (!active) { return; }
+        if (!selection.isSet()) { return; }
+        selection.prev();
+        draw();
+    }
+
+    public void guess() {
+        Word word = selection.getWord();
+
+        if (!word.isFilled()) {
+            animateInvalidWord(word);
+            return;
+        }
+
+        if (!word.isAttemptValid()) {
+            animateInvalidWord(word);
+            return;
+        }
+
+        selection.confirm();
+
+        if (isComplete()) {
+            win();
+        }
+
+        attempts -= 1;
+
+        if (attempts <= 0) {
+            lose();
+        }
+    }
+
     public void select(int x, int y) {
         if (!active) { return; }
 
@@ -167,7 +165,6 @@ public class Board implements Serializable
 
         if (selection.containsCell(cell)) {
             selection.setCurrent(cell);
-            draw();
             return;
         }
 
@@ -178,24 +175,24 @@ public class Board implements Serializable
             Word verticalWord = cell.getWord(Word.Orientation.Vertical);
             selection.update(horizontalWord.getSize() > 1 ? horizontalWord : verticalWord);
         }
-
-        draw();
     }
 
-    public void forEach(Consumer<Cell> onNextCell) {
-        for (int y = 0; y < data.length; y++) {
-            for (int x = 0; x < data[y].length; x++) {
-                onNextCell.accept(data[y][x]);
-            }
-        }
+    private void win() {
+        if (onWin == null) { return; }
+        onWin.run();
     }
 
-    public Cell[][] convertData(char[][] rawData) {
+    private void lose() {
+        if (onLose == null) { return; }
+        onLose.run();
+    }
+
+    private Cell[][] convertData(char[][] rawData) {
         Cell[][] data = new Cell[rawData.length][rawData.length];
 
         for (int y = 0; y < data.length; y++) {
             for (int x = 0; x < data[y].length; x++) {
-                data[y][x] = new Cell(rawData[y][x], x, y);
+                data[y][x] = new Cell(Character.toUpperCase(rawData[y][x]), x, y);
             }
         }
 
@@ -203,26 +200,6 @@ public class Board implements Serializable
 
         return data;
     }
-
-    public static List<String> charToList(char[][] data) {
-        List<String> list = new ArrayList<>();
-        for (int y = 0; y < data.length; y++) {
-            for (int x = 0; x < data[y].length; x++) {
-                list.add(Character.toString(data[y][x]));
-            }
-        }
-        return list;
-    }
-    public static List<String> cellToList(Cell[][] data) {
-        List<String> list = new ArrayList<>();
-        for (int y = 0; y < data.length; y++) {
-            for (int x = 0; x < data[y].length; x++) {
-                list.add(Character.toString(data[y][x].getValue()));
-            }
-        }
-        return list;
-    }
-
 
     private Cell[][] wrapData(int size, char[] rawData) {
         Queue<Character> queue = new LinkedList();
@@ -235,7 +212,7 @@ public class Board implements Serializable
         for (int y = 0; y < data.length; y++) {
             for (int x = 0; x < data[y].length; x++) {
                 if (!queue.isEmpty()) {
-                    data[y][x] = new Cell(queue.poll(), x, y);
+                    data[y][x] = new Cell(Character.toUpperCase(queue.poll()), x, y);
                 }
             }
         }
@@ -248,7 +225,7 @@ public class Board implements Serializable
     private void linkCells(Cell[][] data) {
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
-                int nextIndex = 0;
+                int nextIndex;
                 Cell up = null;
                 Cell right = null;
                 Cell down = null;
@@ -281,24 +258,33 @@ public class Board implements Serializable
 
     public void draw() {
         if (view == null) { return; }
-        view.draw(data);
+        view.drawBoard(data);
+        view.updateAttempts(attempts);
     }
 
-    public void animateCell(Cell cell) {
+    public void animateAttempt(Cell cell) {
         if (view == null) { return; }
-        if (cell == null) return;
-        view.animateCell(cell);
+        if (cell == null) { return; }
+        view.animateCellAttempt(cell);
     }
 
-    public static List<String> getTestBoardList(){
-        List<String> list = new ArrayList<>();
-        list.add(" ");list.add(" ");list.add(" ");list.add(" ");list.add(" ");list.add(" ");
-        list.add("C");list.add("A");list.add("S");list.add("H");list.add(" ");list.add(" ");
-        list.add("O");list.add(" ");list.add(" ");list.add(" ");list.add(" ");list.add(" ");
-        list.add("N");list.add("O");list.add("M");list.add("A");list.add("D");list.add(" ");
-        list.add("D");list.add(" ");list.add(" ");list.add(" ");list.add(" ");list.add(" ");
-        list.add("O");list.add("N");list.add("L");list.add("Y");list.add(" ");list.add(" ");
-        return list;
+    public void animateInvalidWord(Word word) {
+        if (view == null) { return; }
+        if (word == null) { return; }
+        for (Cell cell : word.getCells()) {
+            view.animateCellInvalid(cell);
+        }
+    }
+
+    public static char[][] generateEmptyLayout(int size) {
+        char[][] board = new char [size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                board[i][j] = EMPTY_LAYOUT_CELL;
+            }
+        }
+
+        return board;
     }
 
     public static List<String> charToList(char[][] data) {

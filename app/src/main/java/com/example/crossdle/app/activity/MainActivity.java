@@ -31,8 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MediaPlayer mediaPlayer2;
 
     private boolean settingsOpen = false;
-
-    String themeData;
+    private boolean stopMusic = true;
 
     String themeData;
 
@@ -40,8 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        HistoryActivity.updateBoardCount();
-        HistoryActivity.getCompleteHistoryDataBase();
+
 
         settings = findViewById(R.id.button_main_settings);
 
@@ -92,13 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             mediaPlayer = MediaPlayer.create(this, R.raw.menu_song);
             mediaPlayer.setLooping(true);
-            if(themeData != null){
-                mediaPlayer.stop();
-                mediaPlayer.start();
-            } else {
-                System.out.println("hello");
-                mediaPlayer.start();
-            }
+            mediaPlayer.start();
         } else {
             settingsOpen = false;
         }
@@ -154,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.button_main_history){HistoryActivity.getCompleteHistoryDataBase();}
         int timeout = 1500;
         animSlideOut(findViewById(R.id.layout_main));
         view.postDelayed(() -> changeActivity(view), timeout);

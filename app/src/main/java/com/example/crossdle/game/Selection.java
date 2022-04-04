@@ -63,6 +63,7 @@ public class Selection implements Serializable
             return;
         }
         setCurrent(destination);
+        current.setAttempt(Character.MIN_VALUE);
     }
 
     public void update(Word word) {

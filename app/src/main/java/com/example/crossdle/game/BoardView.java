@@ -1,8 +1,7 @@
 package com.example.crossdle.game;
 
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.example.crossdle.R;
 
@@ -26,7 +25,7 @@ public class BoardView implements Serializable {
         this.viewHandler = getView;
     }
 
-    public void draw(Cell[][] cells) {
+    public void drawBoard(Cell[][] cells) {
         View view = viewHandler.get();
         for (int y = 0; y < LAYOUT.length; y++) {
             for (int x = 0; x < LAYOUT[y].length; x++) {
@@ -36,8 +35,19 @@ public class BoardView implements Serializable {
         }
     }
 
-    public void animateCell(Cell cell) {
+    public void updateAttempts(int attempts) {
         View view = viewHandler.get();
-        cell.animate(view.findViewById(LAYOUT[cell.getY()][cell.getX()]));
+        TextView viewAttempts = view.findViewById(R.id.board_textView_attempts);
+        viewAttempts.setText(String.valueOf(attempts));
+    }
+
+    public void animateCellAttempt(Cell cell) {
+        View view = viewHandler.get();
+        cell.animateAttempt(view.findViewById(LAYOUT[cell.getY()][cell.getX()]));
+    }
+
+    public void animateCellInvalid(Cell cell) {
+        View view = viewHandler.get();
+        cell.animateInvalid(view.findViewById(LAYOUT[cell.getY()][cell.getX()]));
     }
 }
