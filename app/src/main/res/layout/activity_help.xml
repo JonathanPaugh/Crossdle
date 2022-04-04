@@ -5,54 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@drawable/setting_background"
+    android:theme="@style/settings_pop_up_style"
     tools:context=".app.popup.HelpPopup">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textView_help_title"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:gravity="center_horizontal|center_vertical"
-        android:text="How To Play"
-        android:textSize="24sp" />
+        android:text="@string/help_title"
+        android:textSize="24sp"
+        android:textColor="@color/white"/>
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:gravity="center_horizontal"
-        android:text="Solve the crossword in x tries."
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_horizontal"
-        android:text="Example 1"
-        android:textSize="20sp" />
-
-    <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/textView_help_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:src="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:gravity="center_horizontal"
-        android:text="Example 2"
-        android:textSize="20sp" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:src="@tools:sample/avatars" />
+        android:text="@string/help_crossdle"
+        android:textColor="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"/>
 
     <Button
-        android:id="@+id/button13"
+        android:id="@+id/button_help_understood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

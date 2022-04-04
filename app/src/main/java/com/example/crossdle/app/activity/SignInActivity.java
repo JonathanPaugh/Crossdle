@@ -74,7 +74,7 @@ public class SignInActivity extends AppCompatActivity {
                 .setIsSmartLockEnabled(false)
                 .setAvailableProviders(providers)
                 .setLogo(R.drawable.crossdle_logos)      // Set logo drawable
-                .setTheme(R.style.AppThemeFirebaseAuth)      // Set theme
+                .setTheme(R.style.signup_theme)      // Set theme
                 .build();
         signInLauncher.launch(signInIntent);
         // [END auth_fui_create_intent]

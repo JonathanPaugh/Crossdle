@@ -2,5 +2,7 @@
 <resources>
     <style name="settings_pop_up_style">
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>
