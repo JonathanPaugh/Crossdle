@@ -17,10 +17,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.crossdle.R;
 import com.example.crossdle.app.popup.SettingsPopup;
 
-
+/**
+ * The main menu Activity.
+ * Contains the functions necessary to access other activities or features.
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    //The main menu Activity.
-    //Contains the functions necessary to access other activities or features.
+
 
     private Button[] buttons;
 

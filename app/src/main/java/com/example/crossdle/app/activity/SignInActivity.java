@@ -22,8 +22,11 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * The sign in Activity
+ * Connects to Firestore authentication.
+ */
 public class SignInActivity extends AppCompatActivity {
-    //The sign in activity for the app.
 
     private static final String TAG = "EmailPassword";
     Intent intent = null;

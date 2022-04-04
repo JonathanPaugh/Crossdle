@@ -25,10 +25,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 
 
-
+/**
+ * HistoryActivity is the activity where the players history is displayed.
+ * It contains functions that manages HistoryItem objects.
+ */
 public class HistoryActivity extends FragmentActivity {
-    // HistoryActivity is the activity where the players history is displayed.
-    // It contains functions that manages HistoryItem objects.
+
     private final ArrayList<HistoryItem> items = new ArrayList<>();
 
     private TextView gameView;

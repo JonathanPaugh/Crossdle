@@ -38,9 +38,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ *  GameActivity is the activity where the game is played from.
+ *  It contains functions relating to game logic and the board.
+ */
 public class GameActivity extends AppCompatActivity {
-    // GameActivity is the activity where the game is played from.
-    // It contains functions relating to game logic and the board.
 
     //Stores information regarding whether this is a daily or random puzzle.
     public static final String ARG_TYPE = "ARG_TYPE";
