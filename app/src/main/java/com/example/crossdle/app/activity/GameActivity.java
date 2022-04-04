@@ -196,7 +196,7 @@ public class GameActivity extends AppCompatActivity {
                 if (document != null && document.exists()) {
                     String boardCount = (String.valueOf(document.get(("board_count"))));
                     HistoryItem history = new HistoryItem(boardCount, timeTaken, correctLetters, board.getAttemptsTaken(), list, Board.cellToList(charArr));
-                    historyRef.collection(boardCount)
+                    historyRef.collection("games")
                             .document(boardCount)
                             .set(history)
                             .addOnSuccessListener(aVoid -> Log.d("W", "DocumentSnapshot successfully written!"))

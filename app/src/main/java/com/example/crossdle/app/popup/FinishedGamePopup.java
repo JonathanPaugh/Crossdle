@@ -63,7 +63,6 @@ public class FinishedGamePopup extends AppCompatActivity {
 
     public void onClickMenu(View view) {
         Intent intent = new Intent(this, MainActivity.class);
-        HistoryActivity.updateBoardCount();
         startActivity(intent);
     }
 }

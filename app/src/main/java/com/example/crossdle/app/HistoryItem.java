@@ -24,7 +24,7 @@ public class HistoryItem implements Serializable {
         this.colourLayout = colourLayout;
     }
 
-    public HistoryItem(){}
+    public HistoryItem() {}
 
     public String getGameId() { return gameId; }
     public int getGameIdAsInt() { return Integer.valueOf(gameId); }
@@ -78,6 +78,4 @@ public class HistoryItem implements Serializable {
         }
         return charArr;
     }
-
-
 }
