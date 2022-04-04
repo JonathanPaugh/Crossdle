@@ -47,8 +47,8 @@ public class HistoryActivity extends FragmentActivity {
         gameView = findViewById(R.id.history_textView_games);
         streakView = findViewById(R.id.history_textView_streak);
         winView = findViewById(R.id.history_textView_win);
-        FragmentStateAdapter adapter = new HistoryPagerAdapter(this);
         viewPager = findViewById(R.id.history_viewPager);
+        FragmentStateAdapter adapter = new HistoryPagerAdapter(this);
         viewPager.setAdapter(adapter);
     }
 
@@ -59,9 +59,6 @@ public class HistoryActivity extends FragmentActivity {
         streakView.setText(String.valueOf(streakCount));
         String winPercent = String.format("%.2f",winCount*100.0/(boardCount))+"%";
         winView.setText(winPercent);
-        FragmentStateAdapter adapter = new HistoryPagerAdapter(this);
-        viewPager = findViewById(R.id.history_viewPager);
-        viewPager.setAdapter(adapter);
     }
 
 
@@ -136,9 +133,8 @@ public class HistoryActivity extends FragmentActivity {
 
         @Override
         public int getItemCount() {
-            return boardCount;
+            return items.size();
         }
-
     }
 }
 
