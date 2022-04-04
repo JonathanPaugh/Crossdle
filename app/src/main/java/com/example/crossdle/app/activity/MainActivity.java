@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -35,30 +36,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = getIntent();
-        themeData = intent.getStringExtra("theme");
+
         ConstraintLayout constraintLayout = findViewById(R.id.layout_main);
 
         Button settings = findViewById(R.id.button_main_settings);
-        if(themeData != null){
-            switch (themeData){
-                case "Ocean":
-                    constraintLayout.setBackgroundResource(R.drawable.gradient_list_ocean);
-                    break;
-                case "Emerald Forest":
-                    constraintLayout.setBackgroundResource(R.drawable.gradient_list_emerald_green);
-                    break;
-                case "Strawberry":
-                    constraintLayout.setBackgroundResource(R.drawable.gradient_list_strawberry);
-                    break;
-                default:
-                    constraintLayout.setBackgroundResource(R.drawable.gradient_list);
-                    break;
-            }
-        } else {
-            constraintLayout.setBackgroundResource(R.drawable.gradient_list);
-            themeData = "Default";
-        }
 
         buttons = new Button[] {
                 findViewById(R.id.button_main_daily_crossdle),
@@ -92,12 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             mediaPlayer = MediaPlayer.create(this, R.raw.menu_song);
             mediaPlayer.setLooping(true);
-            if(themeData != null){
-                mediaPlayer.stop();
-                mediaPlayer.start();
-            } else {
-                mediaPlayer.start();
-            }
             mediaPlayer.start();
         } else {
             settingsOpen = false;
@@ -112,6 +87,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mediaPlayer.stop();
             mediaPlayer.release();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == SettingsPopup.RESULT_OK) {
+            themeData = data.getStringExtra("theme");
+            ConstraintLayout constraintLayout = findViewById(R.id.layout_main);
+
+            if (themeData != null) {
+                switch (themeData) {
+                    case "Ocean":
+                        constraintLayout.setBackgroundResource(R.drawable.gradient_list_ocean);
+                        break;
+                    case "Emerald Forest":
+                        constraintLayout.setBackgroundResource(R.drawable.gradient_list_emerald_green);
+                        break;
+                    case "Strawberry":
+                        constraintLayout.setBackgroundResource(R.drawable.gradient_list_strawberry);
+                        break;
+                    default:
+                        constraintLayout.setBackgroundResource(R.drawable.gradient_list);
+                        break;
+                }
+            } else {
+                constraintLayout.setBackgroundResource(R.drawable.gradient_list);
+                themeData = "Default";
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void animFadeIn(View view, int duration) {
@@ -165,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(this, SettingsPopup.class);
         mediaPlayer2 = MediaPlayer.create(this, R.raw.button_sound_effect);
         mediaPlayer2.start();
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     private void changeActivity(View view) {

@@ -30,6 +30,8 @@ public class SettingsPopup extends Activity implements View.OnClickListener, Ada
     String[] themesArray;
     String selectedTheme;
 
+    public static final int THEME_RESULT = 99;
+
     private SharedPreferences mMyPrefs;
     private SharedPreferences.Editor mMyEdit;
     @Override
@@ -99,10 +101,11 @@ public class SettingsPopup extends Activity implements View.OnClickListener, Ada
 
     @Override
     public void onClick(View view) {
-        if(selectedTheme != null){
-            Intent intent = new Intent(this, MainActivity.class);
+        if (selectedTheme != null) {
+            Intent intent = new Intent();
             intent.putExtra("theme", selectedTheme);
-            startActivity(intent);
+            setResult(RESULT_OK, intent);
         }
+        finish();
     }
 }

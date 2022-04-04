@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
 
+/***
+ * Represents a board that holds the cells of data pertaining to the game state.
+ */
 public class Board implements Serializable
 {
     public static final int DEFAULT_SIZE = 6;
